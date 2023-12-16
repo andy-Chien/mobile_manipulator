@@ -1,0 +1,6 @@
+bool io_fb_lamp_ctrl
+bool io_fb_unlock
+bool io_fb_lower_beam_headlamp
+bool io_fb_left_turn_lamp
+bool io_fb_right_turn_lamp
+bool io_fb_braking_lamp

@@ -1,0 +1,87 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro">
+  <xacro:include filename="$(find mm_description)/urdf/mobile_base/wheel.xacro" />
+  <xacro:include filename="$(find mm_description)/urdf/mobile_base/swerve_drive.gazebo.xacro" />
+
+  <xacro:macro name="swerve_drive" params="name robot_type prefix parent geometry_parameters_file physical_parameters_file">
+
+    <xacro:property name="config_geometry_parameters" value="${xacro.load_yaml(geometry_parameters_file)}" />
+    <xacro:property name="config_physical_parameters" value="${xacro.load_yaml(physical_parameters_file)}" />
+    
+    <xacro:property name="geometry_config" value="${config_geometry_parameters['geometry_config']}" />
+    <xacro:property name="joints_info" value="${config_physical_parameters['joints']}" />
+    <xacro:property name="links_info" value="${config_physical_parameters['links']}" />
+    <xacro:property name="bio" value="${links_info['base']['inertial']['origin']}" />
+    <xacro:property name="bii" value="${links_info['base']['inertial']['inertia']}" />
+    <xacro:property name="bvo" value="${geometry_config['base']['visual']['origin']}" />
+    <xacro:property name="bco" value="${geometry_config['base']['collision']['origin']}" />
+    <xacro:property name="jbo" value="${joints_info['base']['origin']}" />
+
+    <joint name="${prefix}base_joint " type="fixed">
+      <origin
+        xyz="${jbo['x']} ${jbo['y']} ${jbo['z']}"
+        rpy="${jbo['roll']} ${jbo['pitch']} ${jbo['yaw']}" />
+      <parent link="${parent}"/>
+      <child link="${prefix}base_link"/>
+    </joint>
+
+    <link
+      name="${prefix}base_link">
+      <inertial>
+        <origin
+          xyz="${bio['x']} ${bio['y']} ${bio['z']}"
+          rpy="${bio['roll']} ${bio['pitch']} ${bio['yaw']}" />
+        <mass
+          value="${links_info['base']['inertial']['mass']}" />
+        <inertia
+          ixx="${bii['xx']}"
+          ixy="0"
+          ixz="0"
+          iyy="${bii['yy']}"
+          iyz="0"
+          izz="${bii['zz']}" />
+      </inertial>
+      <visual>
+        <origin
+          xyz="${bvo['x']} ${bvo['y']} ${bvo['z']}"
+          rpy="${bvo['roll']} ${bvo['pitch']} ${bvo['yaw']}" />
+        <geometry>
+          <mesh
+            filename="file://$(find ${geometry_config['package']})/${geometry_config['base']['visual']['path']}" />
+        </geometry>
+        <material
+          name="">
+          <color
+            rgba="0.75294 0.75294 0.75294 1" />
+        </material>
+      </visual>
+      <collision>
+        <origin
+          xyz="${bco['x']} ${bco['y']} ${bco['z']}"
+          rpy="${bco['roll']} ${bco['pitch']} ${bco['yaw']}" />
+        <geometry>
+          <mesh
+            filename="file://$(find ${geometry_config['package']})/${geometry_config['base']['collision']['path']}" />
+        </geometry>
+      </collision>
+    </link>
+
+    <xacro:property name="swerve_joint" value="${joints_info['swerve']}" />
+    <xacro:property name="wheel_joint" value="${joints_info['wheel']}" />
+
+    <xacro:swerve_wheel
+      side="lf_"  parent="${prefix}base_link" prefix="${prefix}" geometry_config="${geometry_config}"
+      swerve_joint="${swerve_joint['lf']}" wheel_joint="${wheel_joint['lf']}" links="${links_info}" />
+    <xacro:swerve_wheel
+      side="rf_"  parent="${prefix}base_link" prefix="${prefix}" geometry_config="${geometry_config}"
+      swerve_joint="${swerve_joint['rf']}" wheel_joint="${wheel_joint['rf']}" links="${links_info}" />
+    <xacro:swerve_wheel
+      side="rr_"  parent="${prefix}base_link" prefix="${prefix}" geometry_config="${geometry_config}"
+      swerve_joint="${swerve_joint['rr']}" wheel_joint="${wheel_joint['rr']}" links="${links_info}" />
+    <xacro:swerve_wheel
+      side="lr_"  parent="${prefix}base_link" prefix="${prefix}" geometry_config="${geometry_config}"
+      swerve_joint="${swerve_joint['lr']}" wheel_joint="${wheel_joint['lr']}" links="${links_info}" />
+
+    <xacro:swerve_drive_gazebo prefix="${prefix}"/>
+  </xacro:macro>
+</robot>

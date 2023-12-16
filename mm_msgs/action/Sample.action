@@ -1,0 +1,8 @@
+# Request
+bool aa
+---
+# Result
+mm_msgs/Sample aa
+---
+# Feedback
+mm_msgs/Sample[] aa

@@ -1,0 +1,11 @@
+# request
+bool io_cmd_lamp_ctrl
+bool io_cmd_unlock
+bool io_cmd_lower_beam_headlamp
+bool io_cmd_left_turn_lamp
+bool io_cmd_right_turn_lamp
+bool io_cmd_braking_lamp
+
+---
+# response
+bool success

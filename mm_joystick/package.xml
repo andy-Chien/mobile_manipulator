@@ -1,0 +1,32 @@
+<?xml version="1.0"?>
+<package format="2">
+  <name>mm_joystick</name>
+  <version>0.0.0</version>
+  <description>The mm_joystick package</description>
+
+  <!-- One maintainer tag required, multiple allowed, one person per tag -->
+  <!-- Example:  -->
+  <!-- <maintainer email="jane.doe@example.com">Jane Doe</maintainer> -->
+  <maintainer email="N2107687@e.ntu.edu.sg">andy</maintainer>
+
+
+  <license>MIT</license>
+  
+  <buildtool_depend>ament_cmake</buildtool_depend>
+  <depend>rclcpp_lifecycle</depend>
+  <depend>sensor_msgs</depend>
+  <depend>std_msgs</depend>
+  <depend>mm_msgs</depend>
+  <depend>rclcpp</depend>
+
+  <exec_depend>launch</exec_depend>
+  <exec_depend>launch_ros</exec_depend>
+  <exec_depend>joy</exec_depend>
+  <exec_depend>joy_linux</exec_depend>
+
+  <!-- The export tag contains other, unspecified, tags -->
+  <export>
+    <architecture_independent />
+    <build_type>ament_cmake</build_type>
+  </export>
+</package>

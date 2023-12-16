@@ -1,0 +1,129 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro">
+  
+  <!-- parses the transmission tags and loads the appropriate hardware interfaces and controller manager -->
+  <xacro:macro name="fw01_ros2_control" params="
+    name
+    prefix
+    can_port:=can0
+    hw_read_freq:=100 
+    hw_write_freq:=100
+    use_fake_hardware:=false fake_sensor_commands:=false
+    sim_gazebo:=false sim_ignition:=false">
+
+    <ros2_control name="${name}" type="system">
+      <hardware>
+        <xacro:if value="${sim_gazebo}">
+          <plugin>gazebo_ros2_control/GazeboSystem</plugin>
+        </xacro:if>
+        <xacro:if value="${sim_ignition}">
+          <plugin>ign_ros2_control/IgnitionSystem</plugin>
+        </xacro:if>
+        <xacro:if value="${use_fake_hardware}">
+          <plugin>mock_components/GenericSystem</plugin>
+          <param name="fake_sensor_commands">${fake_sensor_commands}</param>
+          <param name="state_following_offset">0.0</param>
+        </xacro:if>
+
+        <xacro:unless value="${use_fake_hardware or sim_gazebo or sim_ignition}">     
+          <plugin>fw01_robot_driver/BaseHardwareFW01</plugin>
+          <param name="hw_read_freq">${hw_read_freq}</param>
+          <param name="hw_write_freq">${hw_write_freq}</param>
+          <param name="hw_wheel_diam">0.24</param>
+          <param name="can_port">${can_port}</param>
+          <!--param name=""></param-->
+        </xacro:unless>
+      </hardware>
+
+      <xacro:macro name="swerve_wheel_module_ros2_control" params="side prefix">
+        <joint name="${prefix}${side}swerve_joint">
+            <command_interface name="position">
+              <!-- TODO: Fill min and max-->
+              <!-- <param name="min">0</param>
+              <param name="max">0</param> -->
+            </command_interface>
+            <state_interface name="position"/>
+            <state_interface name="velocity"/>
+        </joint>
+        <joint name="${prefix}${side}wheel_joint">
+            <command_interface name="velocity">
+              <!-- TODO: Fill min and max-->
+              <!-- <param name="min">0</param>
+              <param name="max">0</param> -->
+            </command_interface>
+            <state_interface name="position"/>
+            <state_interface name="velocity"/>
+        </joint>
+      </xacro:macro>
+
+      <xacro:macro name="swerve_base_ros2_control" params="prefix">
+        <!-- Quadrant System (I-IV), must start from rf, lf, lr, rr-->
+        <xacro:swerve_wheel_module_ros2_control prefix="${prefix}" side="rf_"/>
+        <xacro:swerve_wheel_module_ros2_control prefix="${prefix}" side="lf_"/>
+        <xacro:swerve_wheel_module_ros2_control prefix="${prefix}" side="lr_"/>
+        <xacro:swerve_wheel_module_ros2_control prefix="${prefix}" side="rr_"/>
+      </xacro:macro>
+
+      <xacro:swerve_base_ros2_control prefix="${prefix}"/>
+
+      <xacro:unless value="${sim_gazebo or sim_ignition}">
+        <gpio name="io_cmd">
+          <!-- bit and name were hard-coded on fw01_interface.cpp. Edit there-->
+          <command_interface name="io_cmd_lamp_ctrl" />
+          <command_interface name="io_cmd_unlock"/>
+          <command_interface name="io_cmd_lower_beam_headlamp"/>
+          <!--command_interface name="io_cmd_upper_beam_headlamp"/-->
+          <command_interface name="io_cmd_left_turn_lamp"/>
+          <command_interface name="io_cmd_right_turn_lamp"/>
+          <command_interface name="io_cmd_braking_lamp"/>
+          <!--command_interface name="io_cmd_clearance_lamp"/-->
+          <!--command_interface name="io_cmd_fog_lamp"/-->
+          <!--command_interface name="io_cmd_speaker"/-->
+        </gpio>
+
+        <gpio name="io_fb">
+          <!-- bit and name were hard-coded on fw01_interface.cpp. Edit there-->
+          <state_interface name="io_fb_lamp_ctrl"/>
+          <state_interface name="io_fb_unlock"/>
+          <state_interface name="io_fb_lower_beam_headlamp"/>
+          <!--state_interface name="io_fb_upper_beam_headlamp"/-->
+          <state_interface name="io_fb_left_turn_lamp"/>
+          <state_interface name="io_fb_right_turn_lamp"/>
+          <state_interface name="io_fb_braking_lamp"/>
+          <!--state_interface name="io_fb_clearance_lamp"/-->
+          <!--state_interface name="io_fb_fog_lamp"/-->
+          <!--state_interface name="io_fb_speaker"/-->
+        </gpio>
+
+        <sensor name="bms_fb">
+          <state_interface name="bms_fb_voltage"/>
+          <state_interface name="bms_fb_current"/>
+          <state_interface name="bms_fb_remaining_capacity"/>
+        </sensor>
+
+        <sensor name="bms_flag_fb">
+          <!-- PRESENT but NOT USED. You may populate flag values here-->
+        </sensor>
+
+        <gpio name="steering_ctrl_cmd">
+          <command_interface name="steering_ctrl_cmd_gear"/>
+          <command_interface name="steering_ctrl_cmd_velocity"/>
+          <command_interface name="steering_ctrl_cmd_steering"/>
+          <command_interface name="steering_ctrl_cmd_slipangle"/>
+        </gpio>
+
+        <gpio name="steering_ctrl_fb">
+          <state_interface name="steering_ctrl_fb_gear"/>
+          <state_interface name="steering_ctrl_fb_velocity"/>
+          <state_interface name="steering_ctrl_fb_steering"/>
+          <state_interface name="steering_ctrl_fb_slipangle"/>
+        </gpio>
+      </xacro:unless>
+      
+    </ros2_control>
+
+  </xacro:macro>
+
+</robot>
+
+    

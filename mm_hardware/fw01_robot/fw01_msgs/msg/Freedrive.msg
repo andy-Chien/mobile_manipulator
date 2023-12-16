@@ -1,0 +1,8 @@
+float64 rf_swerve_pos_rad
+float64 lf_swerve_pos_rad
+float64 lr_swerve_pos_rad
+float64 rr_swerve_pos_rad
+float64 rf_wheel_vel_rad
+float64 lf_wheel_vel_rad
+float64 lr_wheel_vel_rad
+float64 rr_wheel_vel_rad

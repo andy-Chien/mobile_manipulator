@@ -1,0 +1,440 @@
+mm_controllers:
+  robot_description: {
+    type: string,
+    default_value: "",
+    description: "robot desctiption for create a moveit robot model",
+  }
+  robot_description_semantic: {
+    type: string,
+    default_value: "",
+    description: "robot semantic for create a moveit robot model",
+  }
+  kinematics:
+    arm_ik_group: {
+      type: string,
+      default_value: "mobile_manipulator",
+      description: "group name to solve ik",
+    }
+    arm_ik_base_link: {
+      type: string,
+      default_value: "base_link",
+      description: "group name to solve ik",
+    }
+    arm_ik_end_link: {
+      type: string,
+      default_value: "tool_tip",
+      description: "group name to solve ik",
+    }
+    kinematics_solver: {
+      type: string,
+      default_value: "kdl_kinematics_plugin/KDLKinematicsPlugin",
+      description: "ik solver name",
+    }
+    kinematics_solver_search_resolution: {
+      type: double,
+      default_value: 0.005,
+      description: "kinematics solver search resolution",
+    }
+    kinematics_solver_timeout: {
+      type: double,
+      default_value: 0.005,
+      description: "kinematics solver timeout",
+    }
+
+  wheel_names: {
+    type: string_array,
+    default_value: [],
+    description: "Names of wheels used by the controller",
+    validation: {
+      unique<>: null,
+    }
+  }
+  arm_names: {
+    type: string_array,
+    default_value: ['arm'],
+    description: "Names of wheels used by the controller",
+    validation: {
+      unique<>: null,
+    }
+  }
+  base_joints: {
+    type: string_array,
+    default_value: [],
+    description: "Names of joints used by the controller",
+    validation: {
+      unique<>: null,
+    }
+  }
+  arm_joints: {
+    type: string_array,
+    default_value: [],
+    description: "Names of joints used by the controller",
+    validation: {
+      unique<>: null,
+    }
+  }
+  state_publish_rate: {
+    type: double,
+    default_value: 50.0,
+    description: "Rate controller state is published",
+    validation: {
+      lower_bounds: [0.1]
+    }
+  }
+  action_monitor_rate: {
+    type: double,
+    default_value: 20.0,
+    description: "Rate status changes will be monitored",
+    validation: {
+      lower_bounds: [0.1]
+    }
+  }
+  interpolation_method: {
+    type: string,
+    default_value: "splines",
+    description: "The type of interpolation to use, if any",
+    validation: {
+      one_of<>: [["splines", "none"]],
+    }
+  }
+  open_loop_control: {
+    type: bool,
+    default_value: false,
+    description: "Run the controller in open-loop, i.e., 
+      read hardware states only when starting controller. 
+      This is useful when robot is not exactly following the commanded trajectory.",
+  }
+  allow_partial_joints_goal: {
+    type: bool,
+    default_value: false,
+    description: "Goals with partial set of joints are allowed",
+  }
+  allow_integration_in_goal_trajectories: {
+    type: bool,
+    default_value: false,
+    description: "Allow integration in goal trajectories to accept 
+      goals without position or velocity specified",
+  }
+
+  constraints:
+    stopped_velocity_tolerance: {
+      type: double,
+      default_value: 0.01,
+      description: "Velocity tolerance for at the end of the trajectory that 
+        indicates that controlled system is stopped.",
+    }
+    goal_time: {
+      type: double,
+      default_value: 0.0,
+      description: "Time tolerance for achieving trajectory 
+        goal before or after commanded time.",
+      validation: {
+        lower_bounds: [0.0],
+      }
+    }
+    __map_arm_joints:
+      trajectory: {
+        type: double,
+        default_value: 0.0,
+        description: "Per-joint trajectory offset tolerance during movement.",
+      }
+      goal: {
+        type: double,
+        default_value: 0.0,
+        description: "Per-joint trajectory offset tolerance at the goal position.",
+      }
+    __map_base_joints:
+      trajectory: {
+        type: double,
+        default_value: 0.0,
+        description: "Per-joint trajectory offset tolerance during movement.",
+      }
+      goal: {
+        type: double,
+        default_value: 0.0,
+        description: "Per-joint trajectory offset tolerance at the goal position.",
+      }
+
+  arm_params:
+    command_interfaces: {
+      type: string_array,
+      default_value: [],
+      description: "Names of command interfaces to claim",
+      validation: {
+        unique<>: null,
+        subset_of<>: [["position", "velocity", "acceleration", "effort",]],
+        command_interface_type_combinations: null,
+      }
+    }
+    state_interfaces: {
+      type: string_array,
+      default_value: [],
+      description: "Names of state interfaces to claim",
+      validation: {
+        unique<>: null,
+        subset_of<>: [["position", "velocity", "acceleration",]],
+        state_interface_type_combinations: null,
+      }
+    }
+    gains:
+      __map_arm_joints:
+        p: {
+          type: double,
+          default_value: 0.0,
+          description: "Proportional gain for PID"
+        }
+        i: {
+          type: double,
+          default_value: 0.0,
+          description: "Intigral gain for PID"
+        }
+        d: {
+          type: double,
+          default_value: 0.0,
+          description: "Derivative gain for PID"
+        }
+        i_clamp: {
+          type: double,
+          default_value: 0.0,
+          description: "Integrale clamp. Symmetrical in both positive and negative direction."
+        }
+        ff_velocity_scale: {
+          type: double,
+          default_value: 0.0,
+          description: "Feed-forward scaling of velocity."
+        }
+    
+    joint_limits: 
+      __map_arm_joints:
+        pos_max: {
+          type: double,
+          default_value: 0.0,
+          description: "Maximum position of per-joint",
+        }
+        pos_min: {
+          type: double,
+          default_value: 0.0,
+          description: "Minimum position of per-joint",
+        }
+        velocity: {
+          type: double,
+          default_value: 0.0,
+          description: "Maximum velocity of per-joint",
+          validation: {
+            lower_bounds: [0.0],
+          }
+        }
+        acceleration: {
+          type: double,
+          default_value: 0.0,
+          description: "Maximum acceleration of per-joint",
+          validation: {
+            lower_bounds: [0.0],
+          }
+        }
+
+  base_params:
+    prefix: {
+      type: string,
+      default_value: "",
+      description: "Prefix for each joint of base",
+    }
+    linear_vel: {
+      type: double,
+      default_value: 0.0,
+      description: "",
+      validation: {
+        lower_bounds: [0.0]
+      }
+    }
+    divergence_vel: {
+      type: double,
+      default_value: 0.0,
+      description: "",
+      validation: {
+        lower_bounds: [0.0]
+      }
+    }
+    angular_vel: {
+      type: double,
+      default_value: 0.0,
+      description: "",
+      validation: {
+        lower_bounds: [0.0]
+      }
+    }
+    linear_acc: {
+      type: double,
+      default_value: 0.0,
+      description: "",
+      validation: {
+        lower_bounds: [0.0]
+      }
+    }
+    divergence_acc: {
+      type: double,
+      default_value: 0.0,
+      description: "",
+      validation: {
+        lower_bounds: [0.0]
+      }
+    }
+    angular_acc: {
+      type: double,
+      default_value: 0.0,
+      description: "",
+      validation: {
+        lower_bounds: [0.0]
+      }
+    }
+    linear_jerk: {
+      type: double,
+      default_value: 0.0,
+      description: "",
+      validation: {
+        lower_bounds: [0.0]
+      }
+    }
+    angular_jerk: {
+      type: double,
+      default_value: 0.0,
+      description: "",
+      validation: {
+        lower_bounds: [0.0]
+      }
+    }
+    swerve_command_interfaces: {
+      type: string_array,
+      default_value: [],
+      description: "Names of swerve joint command interfaces to claim",
+      validation: {
+        unique<>: null,
+        subset_of<>: [["position", "velocity", "acceleration", "effort",]],
+        command_interface_type_combinations: null,
+      }
+    }
+    swerve_state_interfaces: {
+      type: string_array,
+      default_value: [],
+      description: "Names of swerve joint state interfaces to claim",
+      validation: {
+        unique<>: null,
+        subset_of<>: [["position", "velocity", "acceleration", "effort",]],
+        command_interface_type_combinations: null,
+      }
+    }
+    wheel_command_interfaces: {
+      type: string_array,
+      default_value: [],
+      description: "Names of wheel joint command interfaces to claim",
+      validation: {
+        unique<>: null,
+        subset_of<>: [["position", "velocity", "acceleration", "effort",]],
+        command_interface_type_combinations: null,
+      }
+    }
+    wheel_state_interfaces: {
+      type: string_array,
+      default_value: [],
+      description: "Names of wheel joint state interfaces to claim",
+      validation: {
+        unique<>: null,
+        subset_of<>: [["position", "velocity", "acceleration", "effort",]],
+        command_interface_type_combinations: null,
+      }
+    }
+    wheel_params:
+      __map_wheel_names:
+        joints: {
+          type: string_array,
+          default_value: [],
+          description: "Names of arms used by the controller",
+          validation: {
+            unique<>: null,
+          }
+        }
+        pos_on_vehicle: {
+          type: double_array,
+          default_value: [0.0, 0.0],
+          description: "",
+        }
+        motors_id: {
+          type: int_array,
+          default_value: [1, 2],
+          description: "",
+        }
+        radius: {
+          type: double,
+          default_value: 0.0,
+          description: "",
+          validation: {
+            lower_bounds: [0.0]
+          }
+        }
+        swerve_joint_has_pos_limit: {
+          type: bool,
+          default_value: false,
+          description: "",
+        }
+        swerve_joint_has_vel_limit: {
+          type: bool,
+          default_value: false,
+          description: "",
+        }
+        swerve_joint_has_acc_limit: {
+          type: bool,
+          default_value: false,
+          description: "",
+        }
+        swerve_joint_pos_max: {
+          type: double,
+          default_value: 0.0,
+          description: "Maximum position of per-joint",
+        }
+        swerve_joint_pos_min: {
+          type: double,
+          default_value: 0.0,
+          description: "Minimum position of per-joint",
+        }
+        swerve_joint_velocity_max: {
+          type: double,
+          default_value: 0.0,
+          description: "Maximum velocity of per-joint",
+          validation: {
+            lower_bounds: [0.0],
+          }
+        }
+        swerve_joint_acceleration_max: {
+          type: double,
+          default_value: 0.0,
+          description: "Maximum acceleration of per-joint",
+          validation: {
+            lower_bounds: [0.0],
+          }
+        }
+        wheel_joint_has_vel_limit: {
+          type: bool,
+          default_value: false,
+          description: "",
+        }
+        wheel_joint_has_acc_limit: {
+          type: bool,
+          default_value: false,
+          description: "",
+        }
+        wheel_joint_velocity_max: {
+          type: double,
+          default_value: 0.0,
+          description: "Maximum velocity of per-joint",
+          validation: {
+            lower_bounds: [0.0],
+          }
+        }
+        wheel_joint_acceleration_max: {
+          type: double,
+          default_value: 0.0,
+          description: "Maximum acceleration of per-joint",
+          validation: {
+            lower_bounds: [0.0],
+          }
+        }

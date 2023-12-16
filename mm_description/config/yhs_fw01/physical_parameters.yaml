@@ -1,0 +1,90 @@
+joints:
+  base:
+    origin: {x: 0, y: 0, z: 0.44, roll: 0, pitch: 0, yaw: 0}
+  swerve:
+    lf:
+      origin: {x: 0.2, y: 0.21, z: -0.113, roll: 0, pitch: 0, yaw: !degrees 180}
+      axis: {x: 0, y: 0, z: 1}
+    rf:
+      origin: {x: 0.2, y: -0.21, z: -0.113, roll: 0, pitch: 0, yaw: 0}
+      axis: {x: 0, y: 0, z: 1}
+    rr:
+      origin: {x: -0.2, y: -0.21, z: -0.113, roll: 0, pitch: 0, yaw: 0}
+      axis: {x: 0, y: 0, z: 1}
+    lr:
+      origin: {x: -0.2, y: 0.21, z: -0.113, roll: 0, pitch: 0, yaw: !degrees 180} #13664
+      axis: {x: 0, y: 0, z: 1}
+  wheel:
+    lf:
+      origin: {x: 0, y: 0, z: -0.207, roll: 0, pitch: 0, yaw: 0}
+      axis: {x: 0, y: -1, z: 0}
+    rf:
+      origin: {x: 0, y: 0, z: -0.207, roll: 0, pitch: 0, yaw: 0}
+      axis: {x: 0, y: 1, z: 0}
+    rr:
+      origin: {x: 0, y: 0, z: -0.207, roll: 0, pitch: 0, yaw: 0}
+      axis: {x: 0, y: 1, z: 0}
+    lr:
+      origin: {x: 0, y: 0, z: -0.207, roll: 0, pitch: 0, yaw: 0}
+      axis: {x: 0, y: -1, z: 0}
+
+links:
+  base:
+    inertial:
+      origin: {x: 0, y: 0, z: -0.2, roll: 0, pitch: 0, yaw: 0}
+      mass: 40
+      inertia: {xx: 1.2, yy: 1.5, zz: 2}
+  swerve:
+    inertial:
+      origin: {x: 0, y: 0.05, z: -0.12, roll: 0, pitch: 0, yaw: 0}
+      mass: 2
+      inertia: {xx: 0.01, yy: 0.01, zz: 0.01}
+  wheel:
+    inertial:
+      origin: {x: 0, y: -0.0075, z: 0, roll: 0, pitch: 0, yaw: 0}
+      mass: 2
+      inertia: {xx: 0.01, yy: 0.01, zz: 0.01}
+
+  # swerve:
+  #   lf:
+  #     origin: {x: 0.23599, y: 0.22433, z: 0, roll: 0, pitch: 0, yaw: !degrees 180}
+  #     axis: {x: 0, y: 0, z: -1}
+  #   rf:
+  #     origin: {x: 0.23599, y: -0.19567, z: 0, roll: 0, pitch: 0, yaw: 0}
+  #     axis: {x: 0, y: 0, z: -1}
+  #   rr:
+  #     origin: {x: -0.16401, y: -0.19567, z: 0, roll: 0, pitch: 0, yaw: 0}
+  #     axis: {x: 0, y: 0, z: -1}
+  #   lr:
+  #     origin: {x: -0.16401, y: 0.22433, z: 0, roll: 0, pitch: 0, yaw: !degrees 180}
+  #     axis: {x: 0, y: 0, z: -1}
+  # wheel:
+  #   lf:
+  #     origin: {x: 0, y: 0, z: -0.2037, roll: 0, pitch: 0, yaw: 0}
+  #     axis: {x: 0, y: -1, z: 0}
+  #   rf:
+  #     origin: {x: 0, y: 0, z: -0.2037, roll: 0, pitch: 0, yaw: 0}
+  #     axis: {x: 0, y: 1, z: 0}
+  #   rr:
+  #     origin: {x: 0, y: 0, z: -0.2037, roll: 0, pitch: 0, yaw: 0}
+  #     axis: {x: 0, y: 1, z: 0}
+  #   lr:
+  #     origin: {x: 0, y: 0, z: -0.2037, roll: 0, pitch: 0, yaw: 0}
+  #     axis: {x: 0, y: -1, z: 0}
+
+# links:
+#   base:
+#     inertial:
+#       origin: {x: 0.031466, y: 0.014072, z: -0.020061, roll: 0, pitch: 0, yaw: 0}
+#       mass: 14.32
+#       inertia: {xx: 0.11358, yy: 0.24445, zz: 0.34372}
+#   swerve:
+#     inertial:
+#       origin: {x: 0, y: 0.049715, z: -0.1212, roll: 0, pitch: 0, yaw: 0}
+#       mass: 0.346
+#       inertia: {xx: 0.0020072, yy: 0.0017745, zz: 0.00069133}
+#   wheel:
+#     inertial:
+#       origin: {x: 0, y: -0.007281, z: 0, roll: 0, pitch: 0, yaw: 0}
+#       mass: 0.69595
+#       inertia: {xx: 0.0096289, yy: 0.017504, zz: 0.009629}

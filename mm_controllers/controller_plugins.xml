@@ -1,0 +1,20 @@
+<library path="mm_controllers">
+  <class name="mm_controllers/MMServoController" type="mm_controllers::MMServoController" 
+    base_class_type="controller_interface::ControllerInterface">
+    <description>
+      Mobile manipulator servo controller.
+    </description>
+  </class>
+  <class name="mm_controllers/MMTrajectoryController" type="mm_controllers::MMTrajectoryController" 
+    base_class_type="controller_interface::ControllerInterface">
+    <description>
+      The controller for joint trajectory of the arm and path of the base
+    </description>
+  </class>
+  <class name="mm_controllers/MobilePathController" type="mm_controllers::MobilePathController" 
+    base_class_type="controller_interface::ControllerInterface">
+    <description>
+      The controller for Path tracking of the mobile base
+    </description>
+  </class>
+</library>

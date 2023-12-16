@@ -1,0 +1,28 @@
+controller_manager:
+  ros__parameters:
+    update_rate: 100 # Hz
+
+    joint_state_broadcaster:
+      type: joint_state_broadcaster/JointStateBroadcaster
+
+    mobile_standard_driver_controller:
+      type: fw01_controllers/SteerController
+
+    mobile_freedrive_driver_controller:
+      type: fw01_controllers/FreedriveController
+
+    mobile_io_and_status_controller:
+      type: fw01_controllers/GPIOController
+
+
+mobile_standard_driver_controller:
+  ros__parameters:
+    state_publish_rate: 100.0 
+
+mobile_freedrive_driver_controller:
+  ros__parameters:
+    state_publish_rate: 100.0 
+
+mobile_io_and_status_controller:
+  ros__parameters:
+    state_publish_rate: 100.0 

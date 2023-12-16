@@ -1,0 +1,20 @@
+<library path="fw01_controllers">
+  <class name="fw01_controllers/GPIOController" type="fw01_controllers::GPIOController" 
+    base_class_type="controller_interface::ControllerInterface">
+    <description>
+       IO Controller for FW01 Base. Need to run this
+    </description>
+  </class>
+  <class name="fw01_controllers/SteerController" type="fw01_controllers::SteerController" 
+    base_class_type="controller_interface::ControllerInterface">
+    <description>
+       Steer Controller for motion command using internal FW01 robot function and kinematics (cmd_ctrl message)
+    </description>
+  </class>
+  <class name="fw01_controllers/FreedriveController" type="fw01_controllers::FreedriveController" 
+    base_class_type="controller_interface::ControllerInterface">
+    <description>
+      Freedrive Controller for testing freedrive motion
+    </description>
+  </class>
+</library>

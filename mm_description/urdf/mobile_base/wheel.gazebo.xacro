@@ -1,0 +1,31 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro">
+  <xacro:macro name="wheel_gazebo" params="side prefix">
+    <gazebo reference="${prefix}${side}swerve_link">
+      <!-- <mu1 value="0.1"/> -->
+      <!-- <mu2 value="0.1"/> -->
+      <material>Gazebo/Black</material>
+      <selfCollide>false</selfCollide>
+    </gazebo>
+    <gazebo reference="${prefix}${side}wheel_link">
+      <!-- <mu value="100000.0"/> -->
+      <!-- <mu1 value="100000.0"/> -->
+      <!-- <mu2 value="100000.0"/> -->
+      <!-- <soft_cfm value="0" /> -->
+      <!-- <soft_erp value="0.02" /> -->
+      <kp value="100000.0" />
+      <kd value="10000000000000.0" />
+      <!-- <max_vel value="0.01" /> -->
+      <!-- <min_vel value="0.001" /> -->
+      <!-- <fdir1 value="0 0 0"/> -->
+      <material>Gazebo/Blue</material>
+      <selfCollide>false</selfCollide>
+    </gazebo>
+    <gazebo reference="${prefix}${side}swerve_joint">
+      <implicitSpringDamper>True</implicitSpringDamper>
+    </gazebo>
+    <gazebo reference="${prefix}${side}wheel_joint">
+      <implicitSpringDamper>True</implicitSpringDamper>
+    </gazebo>
+  </xacro:macro>
+</robot>

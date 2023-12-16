@@ -1,0 +1,25 @@
+<?xml version="1.0"?>
+<robot name="swerve_drive" xmlns:xacro="http://www.ros.org/wiki/xacro">
+  <xacro:include filename="$(find mm_description)/urdf/mobile_base/wheel.ros2_control.xacro" />
+  <xacro:macro name="swerve_drive_ros2_control" params="name prefix use_fake_hardware sim_gazebo">
+
+    <ros2_control name="${name}" type="system">
+      <hardware>
+        <xacro:if value="${sim_gazebo}">
+          <plugin>gazebo_ros2_control/GazeboSystem</plugin>
+        </xacro:if>
+        <xacro:if value="${use_fake_hardware}">
+          <plugin>fake_components/GenericSystem</plugin>
+          <param name="state_following_offset">0.0</param>
+        </xacro:if>
+        <xacro:unless value="${use_fake_hardware or sim_gazebo}">
+        </xacro:unless>
+      </hardware>
+      <xacro:wheel_ros2_control prefix="${prefix}" side="lf_" swerve_id="0" wheel_id="1"/>
+      <xacro:wheel_ros2_control prefix="${prefix}" side="rf_" swerve_id="2" wheel_id="3"/>
+      <xacro:wheel_ros2_control prefix="${prefix}" side="rr_" swerve_id="4" wheel_id="5"/>
+      <xacro:wheel_ros2_control prefix="${prefix}" side="lr_" swerve_id="6" wheel_id="7"/>
+    </ros2_control>
+  </xacro:macro>
+</robot>
+

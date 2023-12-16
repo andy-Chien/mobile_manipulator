@@ -1,0 +1,32 @@
+geometry_config:
+  package: mm_description
+
+  base:
+    visual:
+      # origin: {x: -0.03599, y: -0.01433, z: -0.13994, roll: 0, pitch: 0, yaw: 0}
+      # path: meshes/yhs_fw01/base_link.STL
+      origin: {x: 0, y: 0, z: 0, roll: 0, pitch: 0, yaw: 0}
+      path: meshes/yhs_fw01/base_link_collision.STL
+    collision:
+      origin: {x: 0, y: 0, z: 0, roll: 0, pitch: 0, yaw: 0}
+      path: meshes/yhs_fw01/base_link_collision.STL
+
+  swerve:
+    visual:
+      # origin: {x: 0, y: 0, z: -0.0033, roll: 0, pitch: 0, yaw: 0}
+      # path: meshes/yhs_fw01/swerve_link.STL
+      origin: {x: 0, y: 0, z: 0, roll: 0, pitch: 0, yaw: 0}
+      path: meshes/yhs_fw01/swerve_link_collision.STL
+    collision:
+      origin: {x: 0, y: 0, z: 0, roll: 0, pitch: 0, yaw: 0}
+      path: meshes/yhs_fw01/swerve_link_collision.STL
+
+  wheel:
+    visual:
+      # origin: {x: 0, y: 0, z: 0, roll: 0, pitch: 0, yaw: 0}
+      # path: meshes/yhs_fw01/wheel_link.STL
+      origin: {x: 0, y: 0, z: 0, roll: 0, pitch: 0, yaw: 0}
+      path: meshes/yhs_fw01/wheel_link_collision.STL
+    collision:
+      origin: {x: 0, y: 0, z: 0, roll: 0, pitch: 0, yaw: 0}
+      path: meshes/yhs_fw01/wheel_link_collision.STL

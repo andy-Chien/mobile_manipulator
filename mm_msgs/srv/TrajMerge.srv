@@ -1,0 +1,7 @@
+# request
+trajectory_msgs/JointTrajectory[] trajectories
+
+---
+# response
+bool success
+trajectory_msgs/JointTrajectory trajectory

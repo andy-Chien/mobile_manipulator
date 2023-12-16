@@ -1,0 +1,6 @@
+# request
+bool aa
+
+---
+# response
+mm_msgs/Sample[] aa

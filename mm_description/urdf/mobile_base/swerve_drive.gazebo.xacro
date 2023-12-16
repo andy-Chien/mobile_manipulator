@@ -1,0 +1,12 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro">
+  <xacro:macro name="swerve_drive_gazebo" params="prefix">
+    <gazebo reference="${prefix}base_link">
+      <mu1>0.2</mu1>
+      <mu2>0.2</mu2>
+      <material>Gazebo/White</material>
+      <selfCollide>false</selfCollide>
+    </gazebo>
+  </xacro:macro>
+</robot>
+

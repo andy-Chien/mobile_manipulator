@@ -1,0 +1,9 @@
+<library path="fw01_robot_driver">
+
+  <class name="fw01_robot_driver/BaseHardwareFW01" type="fw01_robot_driver::BaseHardwareFW01" base_class_type="hardware_interface::SystemInterface">
+    <description>
+      ROS2 Control for YHS Base FW01. Nanyang Technological University
+    </description>
+  </class>
+
+</library>

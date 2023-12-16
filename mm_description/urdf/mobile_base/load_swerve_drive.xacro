@@ -1,0 +1,24 @@
+<?xml version="1.0"?>
+<robot name="$(arg name)" xmlns:xacro="http://www.ros.org/wiki/xacro">
+  <xacro:include filename="$(find mm_description)/urdf/mobile_base/swerve_drive.xacro" />
+  <xacro:include filename="$(find mm_description)/urdf/mobile_base/swerve_drive.ros2_control.xacro" />
+
+  <xacro:arg name="name" default="" />
+  <xacro:arg name="robot_type" default=""/>
+  <xacro:arg name="prefix" default="" />
+  <xacro:arg name="description_package" default="" />
+  <xacro:arg name="geometry_parameters_file" default="$(find mm_description)/config/$(arg robot_type)/geometry_parameters.yaml" />
+  <xacro:arg name="physical_parameters_file" default="$(find mm_description)/config/$(arg robot_type)/physical_parameters.yaml" />
+
+  <link name="base_footprint"/>
+  
+  
+  <xacro:swerve_drive
+      name="$(arg name)"
+      robot_type="$(arg robot_type)"
+      prefix="$(arg prefix)"
+      parent="base_footprint"
+      geometry_parameters_file="$(arg geometry_parameters_file)"
+      physical_parameters_file="$(arg physical_parameters_file)" />
+  <xacro:swerve_drive_ros2_control prefix="$(arg prefix)"/>
+</robot>

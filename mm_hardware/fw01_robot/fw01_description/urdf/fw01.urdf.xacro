@@ -1,0 +1,88 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro" name="$(arg name)">
+  <xacro:include filename="$(find mm_description)/urdf/mobile_base/swerve_drive.xacro" />
+  <xacro:include filename="$(find mm_description)/urdf/mobile_base/swerve_drive.ros2_control.xacro" />
+  <xacro:include filename="$(find fw01_description)/urdf/fw01.ros2_control.xacro" />
+
+  <xacro:arg name="name" default="fw01" />
+  <xacro:arg name="mobile_type" default="yhs_fw01"/>
+  <xacro:arg name="mobile_prefix" default="" />
+  <xacro:arg name="mobile_geometry_parameters_file" default="$(
+    find swerve_drive_description)/config/$(arg mobile_type)/geometry_parameters.yaml" />
+  <xacro:arg name="mobile_physical_parameters_file" default="$(
+    find swerve_drive_description)/config/$(arg mobile_type)/physical_parameters.yaml" />
+
+  <!-- Parameters for FW01 -->
+  <xacro:arg name="fw01_can_port" default="can0" />  
+  <xacro:arg name="fw01_read_freq" default="100" />  
+  <xacro:arg name="fw01_write_freq" default="100" />  
+
+    <!-- Simulation parameters -->
+  <xacro:arg name="use_fake_hardware" default="false" />
+  <xacro:arg name="fake_sensor_commands" default="false" />
+  <xacro:arg name="sim_gazebo" default="false" />
+  <xacro:arg name="sim_ignition" default="false" />
+  <xacro:arg name="simulation_controllers" default="" />
+
+  <link name="$(arg mobile_prefix)base_footprint"/>
+  
+  <xacro:swerve_drive
+      name="$(arg name)_base"
+      prefix="$(arg mobile_prefix)"
+      robot_type="$(arg mobile_type)"
+      parent="$(arg mobile_prefix)base_footprint"
+      geometry_parameters_file="$(arg mobile_geometry_parameters_file)"
+      physical_parameters_file="$(arg mobile_physical_parameters_file)" />
+
+  <xacro:if value="$(arg sim_gazebo)">
+    <!-- Gazebo plugins -->
+    <gazebo reference="$(arg mobile_prefix)base_footprint">
+    </gazebo>
+    <gazebo>
+      <plugin filename="libgazebo_ros2_control.so" name="gazebo_ros2_control">
+        <parameters>$(arg simulation_controllers)</parameters>
+      </plugin>
+    </gazebo>
+    <!-- <gazebo>
+      <plugin filename="libgazebo_ros_state.so" name="gazebo_ros2_state"/>
+    </gazebo> -->
+  </xacro:if>
+
+  <xacro:if value="$(arg sim_ignition)">
+    <!-- Gazebo plugins -->
+    <gazebo reference="$(arg mobile_prefix)base_footprint">
+    </gazebo>fw01_can_port
+    <gazebo>
+      <plugin filename="libign_ros2_control-system.so" 
+        name="ign_ros2_control::IgnitionROS2ControlPlugin">
+        <parameters>$(arg simulation_controllers)</parameters>
+        <controller_manager_node_name>
+          $(arg mobile_prefix)controller_manager
+        </controller_manager_node_name>
+      </plugin>
+    </gazebo>
+  </xacro:if>
+
+  <!-- For simulation, i think should comment out -->
+  <!--xacro:swerve_drive_ros2_control
+    name="$(arg name)_base"
+    prefix="$(arg mobile_prefix)"
+    sim_gazebo="$(arg sim_gazebo)"
+    use_fake_hardware="$(arg use_fake_hardware)"
+    /-->
+
+  
+  <xacro:fw01_ros2_control
+    name="$(arg name)_base"
+    prefix="$(arg mobile_prefix)"
+    can_port="$(arg fw01_can_port)"
+    hw_read_freq="$(arg fw01_read_freq)"
+    hw_write_freq="$(arg fw01_write_freq)"
+    use_fake_hardware="$(arg use_fake_hardware)"
+    fake_sensor_commands="$(arg fake_sensor_commands)"
+    sim_gazebo="$(arg sim_gazebo)"
+    sim_ignition="$(arg sim_ignition)"
+    />
+
+
+</robot>

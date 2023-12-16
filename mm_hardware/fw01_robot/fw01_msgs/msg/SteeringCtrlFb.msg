@@ -1,0 +1,4 @@
+uint8 gear
+float64 velocity
+float64 angular
+float64 slipangle

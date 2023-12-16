@@ -1,0 +1,6 @@
+# request
+nav_msgs/Path path
+
+---
+# response
+bool success
