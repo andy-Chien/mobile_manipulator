@@ -49,7 +49,7 @@
   <depend>nav2_core</depend>
   <depend>moveit_core</depend>
   <depend>moveit_ros_planning</depend>
-  <depend>robot_localization</depend>
+  <!-- <depend>robot_localization</depend> -->
 
   <export>
     <build_type>ament_cmake</build_type>

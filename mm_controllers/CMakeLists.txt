@@ -44,7 +44,7 @@ set(THIS_PACKAGE_INCLUDE_DEPENDS
   nav2_core
   moveit_core
   moveit_ros_planning
-  robot_localization
+  # robot_localization
 )
 
 find_package(ament_cmake REQUIRED)
@@ -76,7 +76,7 @@ target_include_directories(${PROJECT_NAME} PRIVATE
 
 target_link_libraries(${PROJECT_NAME} 
   mm_controller_parameters
-  ${robot_localization_LIBRARIES}
+  # ${robot_localization_LIBRARIES}
 )
 
 ament_target_dependencies(${PROJECT_NAME}
