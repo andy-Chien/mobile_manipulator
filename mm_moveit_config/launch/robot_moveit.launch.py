@@ -168,6 +168,17 @@ def launch_setup(context, *args, **kwargs):
 
     # Trajectory Execution Configuration
     controllers_yaml = load_yaml(moveit_config_package.perform(context), "config/controllers.yaml")
+
+    arm_prefix_text = arm_prefix.perform(context)
+
+    if arm_prefix_text != "":
+        controllers_yaml["scaled_joint_trajectory_controller"]["joints"] = \
+            [arm_prefix_text + x for x in controllers_yaml["scaled_joint_trajectory_controller"]["joints"]]
+        controllers_yaml["joint_trajectory_controller"]["joints"] = \
+            [arm_prefix_text + x for x in controllers_yaml["joint_trajectory_controller"]["joints"]]
+        controllers_yaml["mm_trajectory_controller"]["joints"] = \
+            [arm_prefix_text + x for x in controllers_yaml["mm_trajectory_controller"]["joints"]]
+
     moveit_controllers = {
         "moveit_simple_controller_manager": controllers_yaml,
         "moveit_controller_manager": "moveit_simple_controller_manager/MoveItSimpleControllerManager",
@@ -348,7 +359,7 @@ def generate_launch_description():
     declared_arguments.append(
         DeclareLaunchArgument(
             "arm_prefix",
-            default_value='""',
+            default_value='',
             description="Prefix of the joint names, useful for \
         multi-robot setup. If changed than also joint names in the controllers' configuration \
         have to be updated.",

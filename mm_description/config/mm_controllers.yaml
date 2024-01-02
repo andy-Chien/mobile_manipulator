@@ -68,12 +68,12 @@ force_torque_sensor_broadcaster:
 joint_trajectory_controller:
   ros__parameters:
     joints:
-      - shoulder_pan_joint
-      - shoulder_lift_joint
-      - elbow_joint
-      - wrist_1_joint
-      - wrist_2_joint
-      - wrist_3_joint
+      - $(var arm_prefix)shoulder_pan_joint
+      - $(var arm_prefix)shoulder_lift_joint
+      - $(var arm_prefix)elbow_joint
+      - $(var arm_prefix)wrist_1_joint
+      - $(var arm_prefix)wrist_2_joint
+      - $(var arm_prefix)wrist_3_joint
     command_interfaces:
       - position
     state_interfaces:
@@ -85,23 +85,23 @@ joint_trajectory_controller:
     constraints:
       stopped_velocity_tolerance: 0.2
       goal_time: 0.0
-      shoulder_pan_joint: {trajectory: 0.2, goal: 0.1}
-      shoulder_lift_joint: {trajectory: 0.2, goal: 0.1}
-      elbow_joint: {trajectory: 0.2, goal: 0.1}
-      wrist_1_joint: {trajectory: 0.2, goal: 0.1}
-      wrist_2_joint: {trajectory: 0.2, goal: 0.1}
-      wrist_3_joint: {trajectory: 0.2, goal: 0.1}
+      $(var arm_prefix)shoulder_pan_joint: {trajectory: 0.2, goal: 0.1}
+      $(var arm_prefix)shoulder_lift_joint: {trajectory: 0.2, goal: 0.1}
+      $(var arm_prefix)elbow_joint: {trajectory: 0.2, goal: 0.1}
+      $(var arm_prefix)wrist_1_joint: {trajectory: 0.2, goal: 0.1}
+      $(var arm_prefix)wrist_2_joint: {trajectory: 0.2, goal: 0.1}
+      $(var arm_prefix)wrist_3_joint: {trajectory: 0.2, goal: 0.1}
 
 
 scaled_joint_trajectory_controller:
   ros__parameters:
     joints:
-      - shoulder_pan_joint
-      - shoulder_lift_joint
-      - elbow_joint
-      - wrist_1_joint
-      - wrist_2_joint
-      - wrist_3_joint
+      - $(var arm_prefix)shoulder_pan_joint
+      - $(var arm_prefix)shoulder_lift_joint
+      - $(var arm_prefix)elbow_joint
+      - $(var arm_prefix)wrist_1_joint
+      - $(var arm_prefix)wrist_2_joint
+      - $(var arm_prefix)wrist_3_joint
     command_interfaces:
       - position
     state_interfaces:
@@ -113,22 +113,22 @@ scaled_joint_trajectory_controller:
     constraints:
       stopped_velocity_tolerance: 0.2
       goal_time: 0.0
-      shoulder_pan_joint: {trajectory: 0.2, goal: 0.1}
-      shoulder_lift_joint: {trajectory: 0.2, goal: 0.1}
-      elbow_joint: {trajectory: 0.2, goal: 0.1}
-      wrist_1_joint: {trajectory: 0.2, goal: 0.1}
-      wrist_2_joint: {trajectory: 0.2, goal: 0.1}
-      wrist_3_joint: {trajectory: 0.2, goal: 0.1}
+      $(var arm_prefix)shoulder_pan_joint: {trajectory: 0.2, goal: 0.1}
+      $(var arm_prefix)shoulder_lift_joint: {trajectory: 0.2, goal: 0.1}
+      $(var arm_prefix)elbow_joint: {trajectory: 0.2, goal: 0.1}
+      $(var arm_prefix)wrist_1_joint: {trajectory: 0.2, goal: 0.1}
+      $(var arm_prefix)wrist_2_joint: {trajectory: 0.2, goal: 0.1}
+      $(var arm_prefix)wrist_3_joint: {trajectory: 0.2, goal: 0.1}
 
 mm_scaled_joint_trajectory_controller:
   ros__parameters:
     joints:
-      - shoulder_pan_joint
-      - shoulder_lift_joint
-      - elbow_joint
-      - wrist_1_joint
-      - wrist_2_joint
-      - wrist_3_joint
+      - $(var arm_prefix)shoulder_pan_joint
+      - $(var arm_prefix)shoulder_lift_joint
+      - $(var arm_prefix)elbow_joint
+      - $(var arm_prefix)wrist_1_joint
+      - $(var arm_prefix)wrist_2_joint
+      - $(var arm_prefix)wrist_3_joint
     command_interfaces:
       - position
     state_interfaces:
@@ -140,12 +140,12 @@ mm_scaled_joint_trajectory_controller:
     constraints:
       stopped_velocity_tolerance: 0.2
       goal_time: 0.0
-      shoulder_pan_joint: {trajectory: 0.2, goal: 0.1}
-      shoulder_lift_joint: {trajectory: 0.2, goal: 0.1}
-      elbow_joint: {trajectory: 0.2, goal: 0.1}
-      wrist_1_joint: {trajectory: 0.2, goal: 0.1}
-      wrist_2_joint: {trajectory: 0.2, goal: 0.1}
-      wrist_3_joint: {trajectory: 0.2, goal: 0.1}
+      $(var arm_prefix)shoulder_pan_joint: {trajectory: 0.2, goal: 0.1}
+      $(var arm_prefix)shoulder_lift_joint: {trajectory: 0.2, goal: 0.1}
+      $(var arm_prefix)elbow_joint: {trajectory: 0.2, goal: 0.1}
+      $(var arm_prefix)wrist_1_joint: {trajectory: 0.2, goal: 0.1}
+      $(var arm_prefix)wrist_2_joint: {trajectory: 0.2, goal: 0.1}
+      $(var arm_prefix)wrist_3_joint: {trajectory: 0.2, goal: 0.1}
 
 mm_trajectory_controller:
   ros__parameters:
@@ -159,12 +159,12 @@ mm_trajectory_controller:
       - linear_y
       - angular_z
     arm_joints:
-      - shoulder_pan_joint
-      - shoulder_lift_joint
-      - elbow_joint
-      - wrist_1_joint
-      - wrist_2_joint
-      - wrist_3_joint
+      - $(var arm_prefix)shoulder_pan_joint
+      - $(var arm_prefix)shoulder_lift_joint
+      - $(var arm_prefix)elbow_joint
+      - $(var arm_prefix)wrist_1_joint
+      - $(var arm_prefix)wrist_2_joint
+      - $(var arm_prefix)wrist_3_joint
     state_publish_rate: 100.0
     action_monitor_rate: 20.0
     allow_partial_joints_goal: true
@@ -174,12 +174,12 @@ mm_trajectory_controller:
       linear_x: {trajectory: 0.2, goal: 0.05}
       linear_y: {trajectory: 0.2, goal: 0.05}
       angular_z: {trajectory: 0.4, goal: 0.1}
-      shoulder_pan_joint: {trajectory: 0.2, goal: 0.1}
-      shoulder_lift_joint: {trajectory: 0.2, goal: 0.1}
-      elbow_joint: {trajectory: 0.2, goal: 0.1}
-      wrist_1_joint: {trajectory: 0.2, goal: 0.1}
-      wrist_2_joint: {trajectory: 0.2, goal: 0.1}
-      wrist_3_joint: {trajectory: 0.2, goal: 0.1}
+      $(var arm_prefix)shoulder_pan_joint: {trajectory: 0.2, goal: 0.1}
+      $(var arm_prefix)shoulder_lift_joint: {trajectory: 0.2, goal: 0.1}
+      $(var arm_prefix)elbow_joint: {trajectory: 0.2, goal: 0.1}
+      $(var arm_prefix)wrist_1_joint: {trajectory: 0.2, goal: 0.1}
+      $(var arm_prefix)wrist_2_joint: {trajectory: 0.2, goal: 0.1}
+      $(var arm_prefix)wrist_3_joint: {trajectory: 0.2, goal: 0.1}
 
     arm_params:
       command_interfaces:
@@ -188,12 +188,12 @@ mm_trajectory_controller:
         - position
         - velocity
       joint_limits:
-        shoulder_pan_joint: {pos_max: 180.0, pos_min: -180.0, velocity: 360.0, acceleration: 360.0}
-        shoulder_lift_joint: {pos_max: 180.0, pos_min: -180.0, velocity: 360.0, acceleration: 360.0}
-        elbow_joint: {pos_max: 180.0, pos_min: -180.0, velocity: 360.0, acceleration: 360.0}
-        wrist_1_joint: {pos_max: 180.0, pos_min: -180.0, velocity: 360.0, acceleration: 360.0}
-        wrist_2_joint: {pos_max: 180.0, pos_min: -180.0, velocity: 360.0, acceleration: 360.0}
-        wrist_3_joint: {pos_max: 180.0, pos_min: -180.0, velocity: 360.0, acceleration: 360.0}
+        $(var arm_prefix)shoulder_pan_joint: {pos_max: 180.0, pos_min: -180.0, velocity: 360.0, acceleration: 360.0}
+        $(var arm_prefix)shoulder_lift_joint: {pos_max: 180.0, pos_min: -180.0, velocity: 360.0, acceleration: 360.0}
+        $(var arm_prefix)elbow_joint: {pos_max: 180.0, pos_min: -180.0, velocity: 360.0, acceleration: 360.0}
+        $(var arm_prefix)wrist_1_joint: {pos_max: 180.0, pos_min: -180.0, velocity: 360.0, acceleration: 360.0}
+        $(var arm_prefix)wrist_2_joint: {pos_max: 180.0, pos_min: -180.0, velocity: 360.0, acceleration: 360.0}
+        $(var arm_prefix)wrist_3_joint: {pos_max: 180.0, pos_min: -180.0, velocity: 360.0, acceleration: 360.0}
     base_params:
       prefix: "mobile_"
       linear_vel: 0.2
@@ -301,23 +301,23 @@ mm_trajectory_controller:
 forward_velocity_controller:
   ros__parameters:
     joints:
-      - shoulder_pan_joint
-      - shoulder_lift_joint
-      - elbow_joint
-      - wrist_1_joint
-      - wrist_2_joint
-      - wrist_3_joint
+      - $(var arm_prefix)shoulder_pan_joint
+      - $(var arm_prefix)shoulder_lift_joint
+      - $(var arm_prefix)elbow_joint
+      - $(var arm_prefix)wrist_1_joint
+      - $(var arm_prefix)wrist_2_joint
+      - $(var arm_prefix)wrist_3_joint
     interface_name: velocity
 
 forward_position_controller:
   ros__parameters:
     joints:
-      - shoulder_pan_joint
-      - shoulder_lift_joint
-      - elbow_joint
-      - wrist_1_joint
-      - wrist_2_joint
-      - wrist_3_joint
+      - $(var arm_prefix)shoulder_pan_joint
+      - $(var arm_prefix)shoulder_lift_joint
+      - $(var arm_prefix)elbow_joint
+      - $(var arm_prefix)wrist_1_joint
+      - $(var arm_prefix)wrist_2_joint
+      - $(var arm_prefix)wrist_3_joint
 
 swerve_controller:
   ros__parameters:
@@ -348,12 +348,12 @@ mm_servo_controller:
       - rr_wheel
       - lr_wheel
     arm_joints:
-      - shoulder_pan_joint
-      - shoulder_lift_joint
-      - elbow_joint
-      - wrist_1_joint
-      - wrist_2_joint
-      - wrist_3_joint
+      - $(var arm_prefix)shoulder_pan_joint
+      - $(var arm_prefix)shoulder_lift_joint
+      - $(var arm_prefix)elbow_joint
+      - $(var arm_prefix)wrist_1_joint
+      - $(var arm_prefix)wrist_2_joint
+      - $(var arm_prefix)wrist_3_joint
 
     base_params:
       prefix: "mobile_"
@@ -466,27 +466,27 @@ mm_servo_controller:
         - position
         - velocity
       joint_limits:
-        shoulder_pan_joint: {
+        $(var arm_prefix)shoulder_pan_joint: {
           has_pos_limit: true, has_vel_limit: true, has_acc_limit: true,
           pos_max: 360.0, pos_min: -360.0, velocity: 120.0, acceleration: 240.0
         }
-        shoulder_lift_joint: {
+        $(var arm_prefix)shoulder_lift_joint: {
           has_pos_limit: true, has_vel_limit: true, has_acc_limit: true,
           pos_max: 360.0, pos_min: -360.0, velocity: 120.0, acceleration: 240.0
         }
-        elbow_joint: {
+        $(var arm_prefix)elbow_joint: {
           has_pos_limit: true, has_vel_limit: true, has_acc_limit: true,
           pos_max: 180.0, pos_min: -180.0, velocity: 180.0, acceleration: 360.0
         }
-        wrist_1_joint: {
+        $(var arm_prefix)wrist_1_joint: {
           has_pos_limit: true, has_vel_limit: true, has_acc_limit: true,
           pos_max: 360.0, pos_min: -360.0, velocity: 180.0, acceleration: 360.0
         }
-        wrist_2_joint: {
+        $(var arm_prefix)wrist_2_joint: {
           has_pos_limit: true, has_vel_limit: true, has_acc_limit: true,
           pos_max: 360.0, pos_min: -360.0, velocity: 180.0, acceleration: 360.0
         }
-        wrist_3_joint: {
+        $(var arm_prefix)wrist_3_joint: {
           has_pos_limit: true, has_vel_limit: true, has_acc_limit: true,
           pos_max: 360.0, pos_min: -360.0, velocity: 180.0, acceleration: 360.0
         }

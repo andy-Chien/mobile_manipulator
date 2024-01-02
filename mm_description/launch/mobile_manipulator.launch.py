@@ -43,6 +43,7 @@ from launch.launch_description_sources import PythonLaunchDescriptionSource
 from launch.substitutions import Command, FindExecutable, LaunchConfiguration, PathJoinSubstitution
 from launch_ros.actions import Node
 from launch_ros.substitutions import FindPackageShare
+from launch_ros.parameter_descriptions import ParameterFile
 
 
 def launch_setup(context, *args, **kwargs):
@@ -246,7 +247,10 @@ def launch_setup(context, *args, **kwargs):
     control_node = Node(
         package="controller_manager",
         executable="ros2_control_node",
-        parameters=[robot_description, controllers_config],
+        parameters=[
+            robot_description, 
+            ParameterFile(controllers_config, allow_substs=True)
+        ],
         output="both",
         condition=UnlessCondition(sim_gazebo)
     )
@@ -366,7 +370,7 @@ def launch_setup(context, *args, **kwargs):
         control_node,
         # set_rdf_param,
         robot_state_publisher_node,
-        mm_ik_service,
+        # mm_ik_service,
         gzserver,
         gzclient,
         gazebo_spawn_robot,
@@ -440,7 +444,7 @@ def generate_launch_description():
     declared_arguments.append(
         DeclareLaunchArgument(
             "arm_prefix",
-            default_value='""',
+            default_value="arm_",
             description="Prefix of the joint names, useful for \
         multi-robot setup. If changed than also joint names in the controllers' configuration \
         have to be updated.",
