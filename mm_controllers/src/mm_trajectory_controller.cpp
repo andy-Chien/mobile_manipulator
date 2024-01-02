@@ -325,16 +325,15 @@ controller_interface::return_type MMTrajectoryController::update(
       // set values for next hardware write() if tolerance is met
       if (!tolerance_violated_while_moving && within_goal_time)
       {
-        // TODO(andyc): use pid on partail joint
         if (use_closed_loop_pid_adapter_)
         {
-          // Update PIDs
-          for (auto i = 0ul; i < dof_; ++i)
+          // Update PIDs // only for arm joints
+          for (auto i = 0ul; i < arm_dof_; ++i)
           {
-            tmp_command_[i] = (state_desired_.velocities[i] * ff_velocity_scale_[i]) +
+            tmp_command_[i] = (state_desired_.velocities[i + base_dof_] * ff_velocity_scale_[i]) +
                               pids_[i]->computeCommand(
-                                state_desired_.positions[i] - state_current_.positions[i],
-                                state_desired_.velocities[i] - state_current_.velocities[i],
+                                state_desired_.positions[i + base_dof_] - state_current_.positions[i + base_dof_],
+                                state_desired_.velocities[i + base_dof_] - state_current_.velocities[i + base_dof_],
                                 (uint64_t)period.nanoseconds());
           }
         }
@@ -449,8 +448,7 @@ controller_interface::return_type MMTrajectoryController::update(
         arm_data_.goal_state.jnt_pos = std::vector<double>(
           state_desired_.positions.begin() + base_dof_, state_desired_.positions.end());
         if (use_closed_loop_pid_adapter_){
-          arm_data_.goal_state.jnt_vel = std::vector<double>(
-            tmp_command_.begin() + base_dof_, tmp_command_.end());
+          arm_data_.goal_state.jnt_vel = tmp_command_;
         }else{
           arm_data_.goal_state.jnt_vel = std::vector<double>(
             state_desired_.velocities.begin() + base_dof_, state_desired_.velocities.end());
@@ -732,12 +730,12 @@ controller_interface::CallbackReturn MMTrajectoryController::on_configure(
   // TODO(andyc): use pid on partail joint
   if (use_closed_loop_pid_adapter_)
   {
-    pids_.resize(dof_);
-    ff_velocity_scale_.resize(dof_);
-    tmp_command_.resize(dof_, 0.0);
+    pids_.resize(arm_dof_);
+    ff_velocity_scale_.resize(arm_dof_);
+    tmp_command_.resize(arm_dof_, 0.0);
 
     // Init PID gains from ROS parameters
-    for (size_t i = 0; i < dof_; ++i)
+    for (size_t i = 0; i < arm_dof_; ++i)
     {
       const auto & gains = params_.arm_params.gains.arm_joints_map.at(params_.arm_joints[i]);
       pids_[i] = std::make_shared<control_toolbox::Pid>(
