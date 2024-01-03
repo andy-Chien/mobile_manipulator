@@ -6,7 +6,7 @@
   <!-- parameters -->
   <xacro:arg name="arm_prefix" default="" />
 
-  <xacro:arg name="mobile_prefix" default="" />
+  <xacro:arg name="mobile_prefix" default="mobile_" />
 
   <xacro:arg name="arm_type" default="ur"/>
 

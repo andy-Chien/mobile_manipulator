@@ -7,9 +7,9 @@
   <xacro:include filename="$(find mm_description)/urdf/tools/suction_tool.xacro"/>
 
 
-  <xacro:arg name="name" default="" />
-  <xacro:arg name="mobile_type" default=""/>
-  <xacro:arg name="mobile_prefix" default="" />
+  <xacro:arg name="name" default="mm" />
+  <xacro:arg name="mobile_type" default="yhs_fw01"/>
+  <xacro:arg name="mobile_prefix" default="mobile_" />
   <xacro:arg name="mobile_geometry_parameters_file" default="$(
     find mm_description)/config/$(arg mobile_type)/geometry_parameters.yaml" />
   <xacro:arg name="mobile_physical_parameters_file" default="$(

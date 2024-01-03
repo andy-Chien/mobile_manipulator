@@ -127,7 +127,7 @@ def launch_setup(context, *args, **kwargs):
         package="controller_manager",
         executable="spawner",
         namespace=namespace,
-        arguments=["joint_state_broadcaster", "--controller-manager", "/controller_manager"],
+        arguments=["joint_state_broadcaster", "--controller-manager", "controller_manager"],
         parameters=[{"use_sim_time": use_sim_time}],
     )
 
@@ -137,7 +137,7 @@ def launch_setup(context, *args, **kwargs):
         executable="spawner",
         output="both",
         namespace=namespace,
-        arguments=["mm_servo_controller", "-c", "/controller_manager", "--inactive"],
+        arguments=["mm_servo_controller", "-c", "controller_manager", "--inactive"],
         parameters=[{"use_sim_time": use_sim_time}],
         condition=IfCondition(
             "false" if initial_controller.perform(context) == "mm_servo_controller" else "true")
@@ -148,7 +148,7 @@ def launch_setup(context, *args, **kwargs):
         executable="spawner",
         output="both",
         namespace=namespace,
-        arguments=["mobile_path_controller", "-c", "/controller_manager", "--inactive"],
+        arguments=["mobile_path_controller", "-c", "controller_manager", "--inactive"],
         parameters=[{"use_sim_time": use_sim_time}],
         condition=IfCondition(
             "false" if initial_controller.perform(context) == "mobile_path_controller" else "true")
@@ -159,7 +159,7 @@ def launch_setup(context, *args, **kwargs):
         executable="spawner",
         output="both",
         namespace=namespace,
-        arguments=["mm_trajectory_controller", "-c", "/controller_manager", "--inactive"],
+        arguments=["mm_trajectory_controller", "-c", "controller_manager", "--inactive"],
         parameters=[{"use_sim_time": use_sim_time}],
         condition=IfCondition(
             "false" if initial_controller.perform(context) == "mm_trajectory_controller" else "true")
@@ -170,7 +170,7 @@ def launch_setup(context, *args, **kwargs):
         executable="spawner",
         output="both",
         namespace=namespace,
-        arguments=["joint_trajectory_controller", "-c", "/controller_manager", "--inactive"],
+        arguments=["joint_trajectory_controller", "-c", "controller_manager", "--inactive"],
         parameters=[{"use_sim_time": use_sim_time}],
         condition=IfCondition(
             "false" if initial_controller.perform(context) == "mobile_path_controller" else "true")
@@ -181,7 +181,7 @@ def launch_setup(context, *args, **kwargs):
         executable="spawner",
         output="both",
         namespace=namespace,
-        arguments=[initial_controller, "-c", "/controller_manager"],
+        arguments=[initial_controller, "-c", "controller_manager"],
         parameters=[{"use_sim_time": use_sim_time}],
     )
 
@@ -190,7 +190,7 @@ def launch_setup(context, *args, **kwargs):
         executable="spawner",
         output="both",
         namespace=namespace,
-        arguments=["joint_trajectory_controller", "-c", "/controller_manager"],
+        arguments=["joint_trajectory_controller", "-c", "controller_manager"],
         parameters=[{"use_sim_time": use_sim_time}],
         condition=IfCondition(
             "true" if initial_controller.perform(context) == "mobile_path_controller" else "false")
@@ -217,6 +217,7 @@ def launch_setup(context, *args, **kwargs):
         package="gazebo_ros",
         executable="spawn_entity.py",
         name="spawn_mm",
+        namespace=namespace,
         arguments=[
             "-entity", "mm",
             "-topic", "robot_description",
@@ -247,6 +248,7 @@ def launch_setup(context, *args, **kwargs):
     control_node = Node(
         package="controller_manager",
         executable="ros2_control_node",
+        namespace=namespace,
         parameters=[
             robot_description, 
             ParameterFile(controllers_config, allow_substs=True)
@@ -309,14 +311,14 @@ def launch_setup(context, *args, **kwargs):
     )
 
     set_description_param = ExecuteProcess(
-        cmd=['ros2', 'param', 'set', '/mm_servo_controller', 'robot_description',
-             robot_description_content.perform(context)],
+        cmd=['ros2', 'param', 'set', namespace.perform(context) + '/mm_servo_controller',
+             'robot_description', robot_description_content.perform(context)],
         output='screen',
     )
     set_semantic_param = ExecuteProcess(
         cmd=[
-            'ros2', 'param', 'set', '/mm_servo_controller', 'robot_description_semantic', 
-            robot_description_semantic_content.perform(context)
+            'ros2', 'param', 'set', namespace.perform(context) + '/mm_servo_controller',
+            'robot_description_semantic', robot_description_semantic_content.perform(context)
         ],
         output='screen',
     )
