@@ -4,7 +4,7 @@
   <xacro:include filename="$(find ur_description)/urdf/ur_macro.xacro"/>
   <xacro:include filename="$(find mm_description)/urdf/mobile_base/swerve_drive.ros2_control.xacro" />
   <xacro:include filename="$(find mm_description)/urdf/mm_sensors.xacro" />
-  <xacro:include filename="$(find mm_description)/urdf/tools/suction_tool.xacro"/>
+  <!-- <xacro:include filename="$(find mm_description)/urdf/tools/suction_tool.xacro"/> -->
 
 
   <xacro:arg name="name" default="mm" />
@@ -107,12 +107,34 @@
     <origin xyz="0 0 0.06" rpy="0 0 0" />  <!-- position robot on the mobile base -->
   </xacro:ur_robot>
 
-  <xacro:tool_marco prefix="$(arg arm_prefix)"/>
-
-  <joint name="$(arg arm_prefix)tool0-tool" type="fixed">
-    <origin xyz="0 0 0" rpy="0 0 0"/>
+  <!-- <xacro:tool_marco prefix="$(arg arm_prefix)"/> -->
+  <link name="$(arg arm_prefix)tool_base"/>
+  <link name="$(arg arm_prefix)pj_tool_tip"/>
+  <link name="$(arg arm_prefix)suction_tool_tip"/>
+  <link name="$(arg arm_prefix)d405_link"/>
+  
+  <joint name="$(arg arm_prefix)tool0-tool_base" type="fixed">
+    <origin xyz="0 0 0" rpy="0 0 -0.78539816339"/>
     <parent link="$(arg arm_prefix)tool0"/>
     <child link="$(arg arm_prefix)tool_base"/>
+  </joint>
+
+  <joint name="$(arg arm_prefix)pj_tool" type="fixed">
+    <origin xyz="0 -0.041 0.176" rpy="0 0 0"/>
+    <parent link="$(arg arm_prefix)tool_base"/>
+    <child link="$(arg arm_prefix)pj_tool_tip"/>
+  </joint>
+
+  <joint name="$(arg arm_prefix)suction_tool" type="fixed">
+    <origin xyz="0.02 0 0.33" rpy="0 0 0"/>
+    <parent link="$(arg arm_prefix)tool_base"/>
+    <child link="$(arg arm_prefix)suction_tool_tip"/>
+  </joint>
+
+  <joint name="$(arg arm_prefix)base-d405" type="fixed">
+    <origin xyz="0.24816342683501683 -0.15421478088509458 -0.09905737640547956" rpy="-1.006184 0.0013119 -1.5359343"/>
+    <parent link="$(arg arm_prefix)base_link"/>
+    <child link="$(arg arm_prefix)d405_link"/>
   </joint>
 
   <xacro:if value="$(arg sim_gazebo)">

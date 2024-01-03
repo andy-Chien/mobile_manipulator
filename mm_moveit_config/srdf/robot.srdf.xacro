@@ -12,7 +12,7 @@
 
   <xacro:include filename="$(find mm_moveit_config)/srdf/$(arg arm_type)_macro.srdf.xacro"/>
 
-  <xacro:ur_srdf name="$(arg name)" prefix="$(arg arm_prefix)"/>
+  <xacro:ur_srdf name="$(arg name)" prefix="$(arg arm_prefix)" tool_tip="tool_tip"/>
 
   <disable_collisions link1="$(arg mobile_prefix)base_link" link2="$(arg arm_prefix)base_link_inertia" reason="Adjacent" />
   <disable_collisions link1="$(arg mobile_prefix)base_link" link2="$(arg mobile_prefix)lf_swerve_link" reason="Adjacent" />
