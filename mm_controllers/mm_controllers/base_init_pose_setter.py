@@ -42,8 +42,16 @@ class BaseInitPoseSetter(Node):
         # Initialize the transform broadcaster
         self.tf_broadcaster = StaticTransformBroadcaster(self)
         self.publisher = self.create_publisher(PoseWithCovarianceStamped, 'initialpose', 10)
+        
+        self.declare_parameter('pose_xyz', '')
+        self.declare_parameter('pose_rpy', '')
+        pose_xyz = self.get_parameter('pose_xyz').get_parameter_value().string_value.split(' ')
+        pose_rpy = self.get_parameter('pose_rpy').get_parameter_value().string_value.split(' ')
+        self.pose_xyz = [float(x) for x in pose_xyz] if len(pose_xyz) == 3 else [0.0]*3
+        self.pose_rpy = [float(x) for x in pose_rpy] if len(pose_rpy) == 3 else [0.0]*3
 
-    def set_init_pose(self, xyz=[0.0]*3, rpy=[0.0]*3):
+    def set_init_pose(self):
+        xyz, rpy = self.pose_xyz, self.pose_rpy
         t = TransformStamped()
 
         # Read message content and assign it to

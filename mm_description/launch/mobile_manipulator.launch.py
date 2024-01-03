@@ -60,6 +60,8 @@ def launch_setup(context, *args, **kwargs):
     pos_x = LaunchConfiguration("pos_x")
     pos_y = LaunchConfiguration("pos_y")
     pos_z = LaunchConfiguration("pos_z")
+    pose_xyz = LaunchConfiguration("pose_xyz")
+    pose_rpy = LaunchConfiguration("pose_rpy")
     sim_gazebo = LaunchConfiguration("sim_gazebo")
     use_fake_hardware = LaunchConfiguration("use_fake_hardware")
     joy_dev = LaunchConfiguration("joy_dev")
@@ -68,6 +70,8 @@ def launch_setup(context, *args, **kwargs):
     description_file = LaunchConfiguration("description_file")
     srdf_file = LaunchConfiguration("srdf_file")
 
+    if any(x.perform(context) != "0.0" for x in [pos_x, pos_y, pos_z]):
+        raise Exception('Param pos_x, pos_y, pos_z are deprecated!')
 
     use_sim_time = sim_gazebo # use sim time only when using gazebo
 
@@ -215,6 +219,13 @@ def launch_setup(context, *args, **kwargs):
     )
 
     # Spawn robot
+
+    pose_xyz_text = pose_xyz.perform(context).split(' ')
+    pose_rpy_text = pose_rpy.perform(context).split(' ')
+    if len(pose_xyz_text) != 3: pose_xyz_text = ['0.0', '0.0', '0.0']
+    if len(pose_rpy_text) != 3: pose_rpy_text = ['0.0', '0.0', '0.0']
+    
+
     gazebo_spawn_robot = Node(
         package="gazebo_ros",
         executable="spawn_entity.py",
@@ -223,9 +234,12 @@ def launch_setup(context, *args, **kwargs):
         arguments=[
             "-entity", "mm",
             "-topic", "robot_description",
-            "-x", pos_x,
-            "-y", pos_y,
-            "-z", pos_z,
+            "-x", pose_xyz_text[0],
+            "-y", pose_xyz_text[1],
+            "-z", pose_xyz_text[2],
+            "-R", pose_rpy_text[0],
+            "-P", pose_rpy_text[1],
+            "-Y", pose_rpy_text[2],
             "-timeout", "500",
         ],
         output="screen",
@@ -309,7 +323,11 @@ def launch_setup(context, *args, **kwargs):
         executable="base_init_pose_setter.py",
         output="both",
         namespace=namespace,
-        parameters=[{"use_sim_time": use_sim_time}],
+        parameters=[{
+            "use_sim_time": use_sim_time,
+            "pose_xyz": pose_xyz,
+            "pose_rpy": pose_rpy,
+        }],
     )
 
     set_description_param = ExecuteProcess(
@@ -501,6 +519,20 @@ def generate_launch_description():
             "pos_z",
             default_value="0.0",
             description="z value of position for init the robot",
+        )
+    )
+    declared_arguments.append(
+        DeclareLaunchArgument(
+            "pose_xyz",
+            default_value="0.0 0.0 0.0",
+            description="xyz value of position for init the robot",
+        )
+    )
+    declared_arguments.append(
+        DeclareLaunchArgument(
+            "pose_rpy",
+            default_value="0.0 0.0 0.0",
+            description="rpy value of position for init the robot",
         )
     )
     declared_arguments.append(
