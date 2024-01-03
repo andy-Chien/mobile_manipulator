@@ -1,0 +1,157 @@
+<?xml version="1.0"?>
+<robot name="$(arg name)" xmlns:xacro="http://www.ros.org/wiki/xacro">
+  <xacro:include filename="$(find mm_description)/urdf/mobile_base/swerve_drive.xacro" />
+  <xacro:include filename="$(find ur_description)/urdf/ur_macro.xacro"/>
+  <xacro:include filename="$(find mm_description)/urdf/mobile_base/swerve_drive.ros2_control.xacro" />
+  <xacro:include filename="$(find mm_description)/urdf/mm_sensors.xacro" />
+  <xacro:include filename="$(find mm_description)/urdf/tools/suction_tool.xacro"/>
+
+
+  <xacro:arg name="name" default="mm" />
+  <xacro:arg name="mobile_type" default="yhs_fw01"/>
+  <xacro:arg name="mobile_prefix" default="mobile_" />
+  <xacro:arg name="mobile_geometry_parameters_file" default="$(
+    find mm_description)/config/$(arg mobile_type)/geometry_parameters.yaml" />
+  <xacro:arg name="mobile_physical_parameters_file" default="$(
+    find mm_description)/config/$(arg mobile_type)/physical_parameters.yaml" />
+
+
+  <!-- UR parameters -->
+  <xacro:arg name="arm_type" default="ur10e"/>
+  <xacro:arg name="arm_prefix" default="" />
+  <xacro:arg name="joint_limit_params" default="$(
+    find ur_description)/config/$(arg arm_type)/joint_limits.yaml"/>
+  <xacro:arg name="kinematics_params" default="$(
+    find ur_description)/config/$(arg arm_type)/default_kinematics.yaml"/>
+  <xacro:arg name="physical_params" default="$(
+    find ur_description)/config/$(arg arm_type)/physical_parameters.yaml"/>
+  <xacro:arg name="visual_params" default="$(
+    find ur_description)/config/$(arg arm_type)/visual_parameters.yaml"/>
+  <xacro:arg name="transmission_hw_interface" default=""/>
+  <xacro:arg name="safety_limits" default="false"/>
+  <xacro:arg name="safety_pos_margin" default="0.15"/>
+  <xacro:arg name="safety_k_position" default="20"/>
+  <!-- ros2_control related parameters -->
+  <xacro:arg name="headless_mode" default="false" />
+  <xacro:arg name="robot_ip" default="0.0.0.0" />
+  <xacro:arg name="script_filename" default=""/>
+  <xacro:arg name="output_recipe_filename" default=""/>
+  <xacro:arg name="input_recipe_filename" default=""/>
+  <!--   tool communication related parameters-->
+  <xacro:arg name="use_tool_communication" default="false" />
+  <xacro:arg name="tool_voltage" default="24" />
+  <xacro:arg name="tool_parity" default="0" />
+  <xacro:arg name="tool_baud_rate" default="115200" />
+  <xacro:arg name="tool_stop_bits" default="1" />
+  <xacro:arg name="tool_rx_idle_chars" default="1.5" />
+  <xacro:arg name="tool_tx_idle_chars" default="3.5" />
+  <xacro:arg name="tool_device_name" default="/tmp/ttyUR" />
+  <xacro:arg name="tool_tcp_port" default="54321" />
+
+    <!-- Simulation parameters -->
+  <xacro:arg name="use_fake_hardware" default="false" />
+  <xacro:arg name="fake_sensor_commands" default="false" />
+  <xacro:arg name="sim_gazebo" default="false" />
+  <xacro:arg name="sim_ignition" default="false" />
+  <xacro:arg name="simulation_controllers" default="" />
+
+  <xacro:arg name="initial_positions_file" default="$(
+    find ur_description)/config/initial_positions.yaml"/>
+
+  <!-- convert to property to use substitution in function -->
+  <!-- <xacro:property name="initial_positions_file" 
+    default="$(arg initial_positions_file)"/> -->
+
+  <link name="$(arg mobile_prefix)base_footprint"/>
+  
+  <xacro:swerve_drive
+      name="$(arg name)_base"
+      prefix="$(arg mobile_prefix)"
+      robot_type="$(arg mobile_type)"
+      parent="$(arg mobile_prefix)base_footprint"
+      geometry_parameters_file="$(arg mobile_geometry_parameters_file)"
+      physical_parameters_file="$(arg mobile_physical_parameters_file)" />
+
+  <xacro:ur_robot
+    name="$(arg name)_arm"
+    tf_prefix="$(arg arm_prefix)"
+    parent="$(arg mobile_prefix)base_link"
+    joint_limits_parameters_file="$(arg joint_limit_params)"
+    kinematics_parameters_file="$(arg kinematics_params)"
+    physical_parameters_file="$(arg physical_params)"
+    visual_parameters_file="$(arg visual_params)"
+    transmission_hw_interface="$(arg transmission_hw_interface)"
+    safety_limits="$(arg safety_limits)"
+    safety_pos_margin="$(arg safety_pos_margin)"
+    safety_k_position="$(arg safety_k_position)"
+    use_fake_hardware="$(arg use_fake_hardware)"
+    fake_sensor_commands="$(arg fake_sensor_commands)"
+    sim_gazebo="$(arg sim_gazebo)"
+    sim_ignition="$(arg sim_ignition)"
+    headless_mode="$(arg headless_mode)"
+    initial_positions="${xacro.load_yaml('$(arg initial_positions_file)')}"
+    use_tool_communication="$(arg use_tool_communication)"
+    tool_voltage="$(arg tool_voltage)"
+    tool_parity="$(arg tool_parity)"
+    tool_baud_rate="$(arg tool_baud_rate)"
+    tool_stop_bits="$(arg tool_stop_bits)"
+    tool_rx_idle_chars="$(arg tool_rx_idle_chars)"
+    tool_tx_idle_chars="$(arg tool_tx_idle_chars)"
+    tool_device_name="$(arg tool_device_name)"
+    tool_tcp_port="$(arg tool_tcp_port)"
+    robot_ip="$(arg robot_ip)"
+    script_filename="$(arg script_filename)"
+    output_recipe_filename="$(arg output_recipe_filename)"
+    input_recipe_filename="$(arg input_recipe_filename)"
+    >
+    <origin xyz="0 0 0.06" rpy="0 0 0" />  <!-- position robot on the mobile base -->
+  </xacro:ur_robot>
+
+  <xacro:tool_marco prefix="$(arg arm_prefix)"/>
+
+  <joint name="$(arg arm_prefix)tool0-tool" type="fixed">
+    <origin xyz="0 0 0" rpy="0 0 0"/>
+    <parent link="$(arg arm_prefix)tool0"/>
+    <child link="$(arg arm_prefix)tool_base"/>
+  </joint>
+
+  <xacro:if value="$(arg sim_gazebo)">
+    <!-- Gazebo plugins -->
+    <gazebo reference="$(arg mobile_prefix)base_footprint">
+    </gazebo>
+    <gazebo>
+      <plugin filename="libgazebo_ros2_control.so" name="gazebo_ros2_control">
+        <parameters>$(arg simulation_controllers)</parameters>
+      </plugin>
+    </gazebo>
+    <!-- <gazebo>
+      <plugin filename="libgazebo_ros_state.so" name="gazebo_ros2_state"/>
+    </gazebo> -->
+  </xacro:if>
+
+  <xacro:if value="$(arg sim_ignition)">
+    <!-- Gazebo plugins -->
+    <gazebo reference="$(arg mobile_prefix)base_footprint">
+    </gazebo>
+    <gazebo>
+      <plugin filename="libign_ros2_control-system.so" 
+        name="ign_ros2_control::IgnitionROS2ControlPlugin">
+        <parameters>$(arg simulation_controllers)</parameters>
+        <controller_manager_node_name>
+          $(arg arm_prefix)$(arg mobile_prefix)controller_manager
+        </controller_manager_node_name>
+      </plugin>
+    </gazebo>
+  </xacro:if>
+
+  <xacro:swerve_drive_ros2_control
+    name="$(arg name)_base"
+    prefix="$(arg mobile_prefix)"
+    sim_gazebo="$(arg sim_gazebo)"
+    use_fake_hardware="$(arg use_fake_hardware)"
+    />
+  <xacro:mm_sensors 
+    arm_prefix="$(arg arm_prefix)"
+    mobile_prefix="$(arg mobile_prefix)"
+  />
+</robot>

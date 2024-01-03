@@ -65,6 +65,8 @@ def launch_setup(context, *args, **kwargs):
     joy_dev = LaunchConfiguration("joy_dev")
     namespace = LaunchConfiguration("namespace")
     launch_rviz = LaunchConfiguration("launch_rviz")
+    description_file = LaunchConfiguration("description_file")
+    srdf_file = LaunchConfiguration("srdf_file")
 
 
     use_sim_time = sim_gazebo # use sim time only when using gazebo
@@ -78,7 +80,7 @@ def launch_setup(context, *args, **kwargs):
             PathJoinSubstitution([FindExecutable(name="xacro")]),
             " ",
             PathJoinSubstitution(
-                [FindPackageShare("mm_description"), "urdf", "load_mobile_manipulator.xacro"]
+                [FindPackageShare("mm_description"), "urdf", description_file]
             ),
             " ",
             "safety_limits:=",
@@ -264,7 +266,7 @@ def launch_setup(context, *args, **kwargs):
             " ",
             PathJoinSubstitution(
                 [FindPackageShare("mm_moveit_config"), 
-                    "srdf", "robot.srdf.xacro"]
+                    "srdf", srdf_file]
             ),
             " ",
             "name:=",
@@ -527,6 +529,20 @@ def generate_launch_description():
             "launch_rviz", 
             default_value="false", 
             description="Launch RViz?",
+        )
+    )
+    declared_arguments.append(
+        DeclareLaunchArgument(
+            "description_file",
+            default_value="load_mobile_manipulator.xacro",
+            description="URDF/XACRO description file with the robot.",
+        )
+    )
+    declared_arguments.append(
+        DeclareLaunchArgument(
+            "srdf_file",
+            default_value="robot.srdf.xacro",
+            description="URDF/XACRO description file with the robot.",
         )
     )
     return LaunchDescription(declared_arguments + [OpaqueFunction(function=launch_setup)])

@@ -56,8 +56,8 @@ def launch_setup(context, *args, **kwargs):
     description_package = LaunchConfiguration("description_package")
     manipulator_description_package = LaunchConfiguration("manipulator_description_package")
     description_file = LaunchConfiguration("description_file")
+    srdf_file = LaunchConfiguration("srdf_file")
     moveit_config_package = LaunchConfiguration("moveit_config_package")
-    moveit_config_file = LaunchConfiguration("moveit_config_file")
     warehouse_sqlite_path = LaunchConfiguration("warehouse_sqlite_path")
     arm_prefix = LaunchConfiguration("arm_prefix")
     mobile_prefix = LaunchConfiguration("mobile_prefix")
@@ -75,6 +75,8 @@ def launch_setup(context, *args, **kwargs):
             "namespace": namespace,
             "launch_rviz": "false",
             "arm_prefix": arm_prefix,
+            "description_file": description_file,
+            "srdf_file": srdf_file,
             }.items(),
     )
 
@@ -145,7 +147,7 @@ def launch_setup(context, *args, **kwargs):
             PathJoinSubstitution([FindExecutable(name="xacro")]),
             " ",
             PathJoinSubstitution(
-                [FindPackageShare(moveit_config_package), "srdf", moveit_config_file]
+                [FindPackageShare(moveit_config_package), "srdf", srdf_file]
             ),
             " ",
             "name:=",
@@ -274,15 +276,7 @@ def launch_setup(context, *args, **kwargs):
         output="screen",
     )
 
-    set_base_init_pose = Node(
-        package="mm_controllers",
-        executable="base_init_pose_setter.py",
-        output="both",
-        namespace=namespace,
-        parameters=[{"use_sim_time": use_sim_time}],
-    )
-
-    nodes_to_start = [fake_controller, move_group_node, set_base_init_pose, rviz_node, servo_node]
+    nodes_to_start = [fake_controller, move_group_node, rviz_node, servo_node]
 
     return nodes_to_start
 
@@ -348,6 +342,13 @@ def generate_launch_description():
         DeclareLaunchArgument(
             "description_file",
             default_value="load_mobile_manipulator.xacro",
+            description="URDF/XACRO description file with the robot.",
+        )
+    )
+    declared_arguments.append(
+        DeclareLaunchArgument(
+            "srdf_file",
+            default_value="robot.srdf.xacro",
             description="URDF/XACRO description file with the robot.",
         )
     )

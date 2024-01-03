@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<robot xmlns:xacro="http://wiki.ros.org/xacro" name="$(arg name)">
+
+  <!-- robot name parameter -->
+  <xacro:arg name="name" default="mobile_manipulator"/>
+  <!-- parameters -->
+  <xacro:arg name="arm_prefix" default="" />
+
+  <xacro:arg name="mobile_prefix" default="mobile_" />
+
+  <xacro:arg name="arm_type" default="ur"/>
+
+  <xacro:include filename="$(find mm_moveit_config)/srdf/$(arg arm_type)_macro.srdf.xacro"/>
+
+  <xacro:ur_srdf name="$(arg name)" prefix="$(arg arm_prefix)"/>
+
+  <disable_collisions link1="$(arg mobile_prefix)base_link" link2="$(arg arm_prefix)base_link_inertia" reason="Adjacent" />
+  <disable_collisions link1="$(arg mobile_prefix)base_link" link2="$(arg mobile_prefix)lf_swerve_link" reason="Adjacent" />
+  <disable_collisions link1="$(arg mobile_prefix)base_link" link2="$(arg mobile_prefix)rf_swerve_link" reason="Adjacent" />
+  <disable_collisions link1="$(arg mobile_prefix)base_link" link2="$(arg mobile_prefix)rr_swerve_link" reason="Adjacent" />
+  <disable_collisions link1="$(arg mobile_prefix)base_link" link2="$(arg mobile_prefix)lr_swerve_link" reason="Adjacent" />
+  <disable_collisions link1="$(arg mobile_prefix)lf_swerve_link" link2="$(arg mobile_prefix)lf_wheel_link" reason="Adjacent" />
+  <disable_collisions link1="$(arg mobile_prefix)rf_swerve_link" link2="$(arg mobile_prefix)rf_wheel_link" reason="Adjacent" />
+  <disable_collisions link1="$(arg mobile_prefix)rr_swerve_link" link2="$(arg mobile_prefix)rr_wheel_link" reason="Adjacent" />
+  <disable_collisions link1="$(arg mobile_prefix)lr_swerve_link" link2="$(arg mobile_prefix)lr_wheel_link" reason="Adjacent" />
+  <disable_collisions link1="$(arg mobile_prefix)base_link" link2="$(arg mobile_prefix)lf_wheel_link" reason="Never" />
+  <disable_collisions link1="$(arg mobile_prefix)base_link" link2="$(arg mobile_prefix)rf_wheel_link" reason="Never" />
+  <disable_collisions link1="$(arg mobile_prefix)base_link" link2="$(arg mobile_prefix)rr_wheel_link" reason="Never" />
+  <disable_collisions link1="$(arg mobile_prefix)base_link" link2="$(arg mobile_prefix)lr_wheel_link" reason="Never" />
+  <disable_collisions link1="$(arg mobile_prefix)base_link" link2="$(arg mobile_prefix)lidar_link" reason="Adjacent" />
+  <disable_collisions link1="$(arg mobile_prefix)lidar_link" link2="$(arg arm_prefix)base_link_inertia" reason="Adjacent" />
+  <disable_collisions link1="$(arg arm_prefix)tool_base" link2="$(arg arm_prefix)wrist_3_link" reason="Adjacent" />
+  <disable_collisions link1="$(arg arm_prefix)tool_base" link2="$(arg arm_prefix)tool0" reason="Adjacent" />
+  <disable_collisions link1="$(arg arm_prefix)tool_base" link2="camera_link" reason="Never" />
+  <disable_collisions link1="$(arg arm_prefix)wrist_3_link" link2="camera_link" reason="Adjacent" />
+
+
+</robot>
