@@ -185,6 +185,14 @@ controller_interface::return_type MMTrajectoryController::update(
   // current state update
   state_current_.time_from_start.set__sec(0);
   read_state_from_hardware(state_current_); //only for arm
+
+  arm_data_.curr_state.jnt_pos = std::vector<double>(
+    state_current_.positions.begin() + base_dof_, state_current_.positions.end());
+  arm_data_.curr_state.jnt_vel = std::vector<double>(
+    state_current_.velocities.begin() + base_dof_, state_current_.velocities.end());
+  arm_data_.curr_state.jnt_acc = std::vector<double>(
+    state_current_.accelerations.begin() + base_dof_, state_current_.accelerations.end());
+
   if(!updateBaseState(time, period)){
     return controller_interface::return_type::ERROR;
   }
