@@ -79,6 +79,11 @@ def launch_setup(context, *args, **kwargs):
         [FindPackageShare(controller_config_package), "config", "mm_controllers.yaml"]
     )
 
+    cp = ParameterFile(controllers_config, allow_substs=True)
+    with open(cp.evaluate(context), 'r') as f, open(
+    '/tmp/launch____controllers_config.yaml', 'w') as h:
+        h.write(f.read())
+
     robot_description_content = Command(
         [
             PathJoinSubstitution([FindExecutable(name="xacro")]),
@@ -116,7 +121,7 @@ def launch_setup(context, *args, **kwargs):
             use_fake_hardware,
             " ",
             "simulation_controllers:=",
-            controllers_config,
+            '/tmp/launch____controllers_config.yaml',
         ]
     )
     robot_description = {"robot_description": robot_description_content}
@@ -466,7 +471,7 @@ def generate_launch_description():
     declared_arguments.append(
         DeclareLaunchArgument(
             "arm_prefix",
-            default_value="arm_",
+            default_value="",
             description="Prefix of the joint names, useful for \
         multi-robot setup. If changed than also joint names in the controllers' configuration \
         have to be updated.",
