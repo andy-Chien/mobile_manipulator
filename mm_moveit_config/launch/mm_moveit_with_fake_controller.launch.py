@@ -62,7 +62,7 @@ def launch_setup(context, *args, **kwargs):
     arm_prefix = LaunchConfiguration("arm_prefix")
     mobile_prefix = LaunchConfiguration("mobile_prefix")
     use_sim_time = LaunchConfiguration("use_sim_time")
-    launch_rviz_ = LaunchConfiguration("launch_rviz_")
+    launch_rviz = LaunchConfiguration("launch_rviz")
     launch_servo = LaunchConfiguration("launch_servo")
     namespace = LaunchConfiguration("ns")
 
@@ -246,7 +246,7 @@ def launch_setup(context, *args, **kwargs):
     rviz_node = Node(
         package="rviz2",
         namespace=namespace,
-        condition=IfCondition(launch_rviz_),
+        condition=IfCondition(launch_rviz),
         executable="rviz2",
         name="rviz2_moveit",
         output="log",
@@ -407,7 +407,7 @@ def generate_launch_description():
         )
     )
     declared_arguments.append(
-        DeclareLaunchArgument("launch_rviz_", default_value="true", description="Launch RViz?")
+        DeclareLaunchArgument("launch_rviz", default_value="true", description="Launch RViz?")
     )
     declared_arguments.append(
         DeclareLaunchArgument("launch_servo", default_value="false", description="Launch Servo?")
