@@ -149,7 +149,7 @@
     prefix="$(arg mobile_prefix)"
     sim_gazebo="$(arg sim_gazebo)"
     use_fake_hardware="$(arg use_fake_hardware)"
-    />
+  />
   <xacro:mm_sensors 
     arm_prefix="$(arg arm_prefix)"
     mobile_prefix="$(arg mobile_prefix)"

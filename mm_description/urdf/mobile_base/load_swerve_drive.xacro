@@ -6,12 +6,14 @@
   <xacro:arg name="name" default="" />
   <xacro:arg name="robot_type" default=""/>
   <xacro:arg name="prefix" default="" />
+  <xacro:arg name="sim_gazebo" default="false" />
+  <xacro:arg name="sim_ignition" default="false" />
   <xacro:arg name="description_package" default="" />
   <xacro:arg name="geometry_parameters_file" default="$(find mm_description)/config/$(arg robot_type)/geometry_parameters.yaml" />
   <xacro:arg name="physical_parameters_file" default="$(find mm_description)/config/$(arg robot_type)/physical_parameters.yaml" />
+  <xacro:arg name="simulation_controllers" default="" />
 
-  <link name="base_footprint"/>
-  
+  <link name="base_footprint"/>  
   
   <xacro:swerve_drive
       name="$(arg name)"
@@ -20,5 +22,40 @@
       parent="base_footprint"
       geometry_parameters_file="$(arg geometry_parameters_file)"
       physical_parameters_file="$(arg physical_parameters_file)" />
-  <xacro:swerve_drive_ros2_control prefix="$(arg prefix)"/>
+
+  <xacro:if value="$(arg sim_gazebo)">
+    <!-- Gazebo plugins -->
+    <gazebo reference="$(arg prefix)base_footprint">
+    </gazebo>
+    <gazebo>
+      <plugin filename="libgazebo_ros2_control.so" name="gazebo_ros2_control">
+        <parameters>$(arg simulation_controllers)</parameters>
+      </plugin>
+    </gazebo>
+    <!-- <gazebo>
+      <plugin filename="libgazebo_ros_state.so" name="gazebo_ros2_state"/>
+    </gazebo> -->
+  </xacro:if>
+
+  <xacro:if value="$(arg sim_ignition)">
+    <!-- Gazebo plugins -->
+    <gazebo reference="$(arg prefix)base_footprint">
+    </gazebo>
+    <gazebo>
+      <plugin filename="libign_ros2_control-system.so" 
+        name="ign_ros2_control::IgnitionROS2ControlPlugin">
+        <parameters>$(arg simulation_controllers)</parameters>
+        <controller_manager_node_name>
+          $(arg prefix)controller_manager
+        </controller_manager_node_name>
+      </plugin>
+    </gazebo>
+  </xacro:if>
+
+  <xacro:swerve_drive_ros2_control
+    name="$(arg name)_base"
+    prefix="$(arg prefix)"
+    sim_gazebo="$(arg sim_gazebo)"
+    use_fake_hardware="$(arg use_fake_hardware)"
+  />
 </robot>

@@ -1,3 +1,9 @@
+wheel_module_list:
+  - lf
+  - rf
+  - rr
+  - lr
+
 joints:
   base:
     origin: {x: 0, y: 0, z: 0.44, roll: 0, pitch: 0, yaw: 0}
