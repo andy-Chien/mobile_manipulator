@@ -9,6 +9,7 @@
     <xacro:property name="config_physical_parameters" value="${xacro.load_yaml(physical_parameters_file)}" />
     
     <xacro:property name="geometry_config" value="${config_geometry_parameters['geometry_config']}" />
+    <xacro:property name="wheel_module_list" value="${config_physical_parameters['wheel_module_list']}" />
     <xacro:property name="joints_info" value="${config_physical_parameters['joints']}" />
     <xacro:property name="links_info" value="${config_physical_parameters['links']}" />
     <xacro:property name="bio" value="${links_info['base']['inertial']['origin']}" />
@@ -69,18 +70,20 @@
     <xacro:property name="swerve_joint" value="${joints_info['swerve']}" />
     <xacro:property name="wheel_joint" value="${joints_info['wheel']}" />
 
-    <xacro:swerve_wheel
-      side="lf_"  parent="${prefix}base_link" prefix="${prefix}" geometry_config="${geometry_config}"
-      swerve_joint="${swerve_joint['lf']}" wheel_joint="${wheel_joint['lf']}" links="${links_info}" />
-    <xacro:swerve_wheel
-      side="rf_"  parent="${prefix}base_link" prefix="${prefix}" geometry_config="${geometry_config}"
-      swerve_joint="${swerve_joint['rf']}" wheel_joint="${wheel_joint['rf']}" links="${links_info}" />
-    <xacro:swerve_wheel
-      side="rr_"  parent="${prefix}base_link" prefix="${prefix}" geometry_config="${geometry_config}"
-      swerve_joint="${swerve_joint['rr']}" wheel_joint="${wheel_joint['rr']}" links="${links_info}" />
-    <xacro:swerve_wheel
-      side="lr_"  parent="${prefix}base_link" prefix="${prefix}" geometry_config="${geometry_config}"
-      swerve_joint="${swerve_joint['lr']}" wheel_joint="${wheel_joint['lr']}" links="${links_info}" />
+    <xacro:macro name="iterate_include_wheel_module" params="wheel_module_list:=^">
+      <xacro:if value="${wheel_module_list}">
+        <!-- pop first item from list -->
+        <xacro:property name="wheel_module_name" value="${wheel_module_list.pop(0)}"/>
+        <xacro:swerve_wheel
+          side="${wheel_module_name}_"  parent="${prefix}base_link" prefix="${prefix}" 
+          geometry_config="${geometry_config}" swerve_joint='${swerve_joint[wheel_module_name]}'
+          wheel_joint="${wheel_joint[wheel_module_name]}" links="${links_info}" />
+        <!-- recursively call myself -->
+        <xacro:iterate_include_wheel_module/>
+      </xacro:if>
+    </xacro:macro>
+
+    <xacro:iterate_include_wheel_module wheel_module_list="${list(wheel_module_list)}"/>
 
     <xacro:swerve_drive_gazebo prefix="${prefix}"/>
   </xacro:macro>
