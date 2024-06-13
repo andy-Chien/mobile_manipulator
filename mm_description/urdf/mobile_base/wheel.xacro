@@ -139,10 +139,10 @@
         name="${prefix}${side}wheel_arrow_link">
         <visual>
             <origin
-                xyz="0 0 0.05"
+                xyz="0 0 0.0125"
                 rpy="0 0 0" />
             <geometry>
-                <box size="0.02 0.02 0.1" />
+                <box size="0.02 0.02 0.025" />
             </geometry>
             <material
                 name="">

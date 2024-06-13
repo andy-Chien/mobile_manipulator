@@ -376,7 +376,7 @@ def generate_launch_description():
     declared_arguments.append(
         DeclareLaunchArgument(
             "mobile_type",
-            default_value="yhs_fw01",
+            default_value="delta_mb",
             description="mobile base type",
         )
     )

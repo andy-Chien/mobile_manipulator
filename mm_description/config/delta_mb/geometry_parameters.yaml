@@ -1,0 +1,26 @@
+geometry_config:
+  package: mm_description
+
+  base:
+    visual:
+      origin: {x: 0, y: 0, z: 0, roll: 0, pitch: 0, yaw: 0}
+      path: meshes/delta_mb/base_link.STL
+    collision:
+      origin: {x: 0, y: 0, z: 0, roll: 0, pitch: 0, yaw: 0}
+      path: meshes/delta_mb/base_link.STL
+
+  swerve:
+    visual:
+      origin: {x: 0, y: 0, z: 0, roll: 0, pitch: 0, yaw: 0}
+      path: meshes/delta_mb/steering_rack.STL
+    collision:
+      origin: {x: 0, y: 0, z: 0, roll: 0, pitch: 0, yaw: 0}
+      path: meshes/delta_mb/steering_rack.STL
+
+  wheel:
+    visual:
+      origin: {x: 0, y: 0, z: 0, roll: 0, pitch: 0, yaw: 0}
+      path: meshes/delta_mb/wheel.STL
+    collision:
+      origin: {x: 0, y: 0, z: 0, roll: 0, pitch: 0, yaw: 0}
+      path: meshes/delta_mb/wheel.STL
