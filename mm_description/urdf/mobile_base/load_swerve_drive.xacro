@@ -13,13 +13,13 @@
   <xacro:arg name="physical_parameters_file" default="$(find mm_description)/config/$(arg robot_type)/physical_parameters.yaml" />
   <xacro:arg name="simulation_controllers" default="" />
 
-  <link name="base_footprint"/>  
+  <link name="$(arg prefix)base_footprint"/>  
   
   <xacro:swerve_drive
       name="$(arg name)"
       robot_type="$(arg robot_type)"
       prefix="$(arg prefix)"
-      parent="base_footprint"
+      parent="$(arg prefix)base_footprint"
       geometry_parameters_file="$(arg geometry_parameters_file)"
       physical_parameters_file="$(arg physical_parameters_file)" />
 

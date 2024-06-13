@@ -25,7 +25,7 @@ joints:
       axis: {x: 0, y: 0, z: 1}
     mr:
       origin: {x: 0, y: 0, z: -0.1245, roll: 1.5708, pitch: 0, yaw: 0}
-      axis: {x: 0, y: 1, z: 0}
+      axis: {x: 0, y: 0, z: 1}
 
 links:
   base:

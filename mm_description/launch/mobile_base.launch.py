@@ -72,7 +72,7 @@ def launch_setup(context, *args, **kwargs):
     use_sim_time = sim_gazebo # use sim time only when using gazebo
 
     controllers_config = PathJoinSubstitution(
-        [FindPackageShare(controller_config_package), "config", "mb_controllers.yaml"]
+        [FindPackageShare(controller_config_package), "config", "mm_controllers.yaml"]
     )
 
     cp = ParameterFile(controllers_config, allow_substs=True)
@@ -126,15 +126,15 @@ def launch_setup(context, *args, **kwargs):
     )
 
     # There may be other controllers of the joints, but this is the initially-started one
-    mm_servo_controller_spawner = Node(
+    mb_servo_controller_spawner = Node(
         package="controller_manager",
         executable="spawner",
         output="both",
         namespace=namespace,
-        arguments=["mm_servo_controller", "-c", "controller_manager", "--inactive"],
+        arguments=["mb_servo_controller", "-c", "controller_manager", "--inactive"],
         parameters=[{"use_sim_time": use_sim_time}],
         condition=IfCondition(
-            "false" if initial_controller.perform(context) == "mm_servo_controller" else "true")
+            "false" if initial_controller.perform(context) == "mb_servo_controller" else "true")
     )
 
     path_controller_spawner = Node(
@@ -148,28 +148,6 @@ def launch_setup(context, *args, **kwargs):
             "false" if initial_controller.perform(context) == "mobile_path_controller" else "true")
     )
 
-    mm_trajectory_controller_spawner = Node(
-        package="controller_manager",
-        executable="spawner",
-        output="both",
-        namespace=namespace,
-        arguments=["mm_trajectory_controller", "-c", "controller_manager", "--inactive"],
-        parameters=[{"use_sim_time": use_sim_time}],
-        condition=IfCondition(
-            "false" if initial_controller.perform(context) == "mm_trajectory_controller" else "true")
-    )
-
-    joint_trajectory_controller_spawner = Node(
-        package="controller_manager",
-        executable="spawner",
-        output="both",
-        namespace=namespace,
-        arguments=["joint_trajectory_controller", "-c", "controller_manager", "--inactive"],
-        parameters=[{"use_sim_time": use_sim_time}],
-        condition=IfCondition(
-            "false" if initial_controller.perform(context) == "mobile_path_controller" else "true")
-    )
-
     active_controller_spawner = Node(
         package="controller_manager",
         executable="spawner",
@@ -177,17 +155,6 @@ def launch_setup(context, *args, **kwargs):
         namespace=namespace,
         arguments=[initial_controller, "-c", "controller_manager"],
         parameters=[{"use_sim_time": use_sim_time}],
-    )
-
-    joint_trajectory_controller_spawner_active = Node(
-        package="controller_manager",
-        executable="spawner",
-        output="both",
-        namespace=namespace,
-        arguments=["joint_trajectory_controller", "-c", "controller_manager"],
-        parameters=[{"use_sim_time": use_sim_time}],
-        condition=IfCondition(
-            "true" if initial_controller.perform(context) == "mobile_path_controller" else "false")
     )
 
     gzserver = IncludeLaunchDescription(
@@ -284,12 +251,9 @@ def launch_setup(context, *args, **kwargs):
         event_handler=OnProcessExit(
             target_action=gazebo_spawn_robot,
             on_exit=[
-                mm_servo_controller_spawner,
+                mb_servo_controller_spawner,
                 path_controller_spawner,
-                mm_trajectory_controller_spawner,
-                joint_trajectory_controller_spawner,
                 active_controller_spawner,
-                joint_trajectory_controller_spawner_active,
                 joint_state_broadcaster_spawner,
             ],
         )
@@ -297,12 +261,9 @@ def launch_setup(context, *args, **kwargs):
         event_handler=OnProcessStart(
             target_action=control_node,
             on_start=[
-                mm_servo_controller_spawner,
+                mb_servo_controller_spawner,
                 path_controller_spawner,
-                mm_trajectory_controller_spawner,
-                joint_trajectory_controller_spawner,
                 active_controller_spawner,
-                joint_trajectory_controller_spawner_active,
                 joint_state_broadcaster_spawner,
             ],
         )
@@ -369,7 +330,7 @@ def generate_launch_description():
     declared_arguments.append(
         DeclareLaunchArgument(
             "initial_controller",
-            default_value="mm_servo_controller",
+            default_value="mb_servo_controller",
             description="Robot controller to start.",
         )
     )

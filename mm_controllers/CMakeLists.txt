@@ -61,12 +61,13 @@ generate_parameter_library(mm_controller_parameters
 include_directories(include)
 
 add_library(${PROJECT_NAME} SHARED
-  src/mm_controller_utils.cpp
-  src/four_wheel_steering_kinematics.cpp
-  src/mm_servo_controller.cpp
-  src/mm_trajectory_controller.cpp
   src/trajectory.cpp
+  src/four_wheel_steering_kinematics.cpp
   src/mobile_path_controller.cpp
+  src/mm_trajectory_controller.cpp
+  src/mm_controller_utils.cpp
+  src/mm_servo_controller.cpp
+  src/mb_servo_controller.cpp
 )
 
 target_include_directories(${PROJECT_NAME} PRIVATE
