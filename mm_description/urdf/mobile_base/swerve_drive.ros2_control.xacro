@@ -1,7 +1,9 @@
 <?xml version="1.0"?>
 <robot name="swerve_drive" xmlns:xacro="http://www.ros.org/wiki/xacro">
   <xacro:include filename="$(find mm_description)/urdf/mobile_base/wheel.ros2_control.xacro" />
-  <xacro:macro name="swerve_drive_ros2_control" params="name prefix use_fake_hardware sim_gazebo">
+  <xacro:macro name="swerve_drive_ros2_control" params="name prefix use_fake_hardware sim_gazebo physical_parameters_file">
+    <xacro:property name="config_physical_parameters" value="${xacro.load_yaml(physical_parameters_file)}" />
+    <xacro:property name="wheel_module_list" value="${config_physical_parameters['wheel_module_list']}" />
 
     <ros2_control name="${name}" type="system">
       <hardware>
@@ -15,10 +17,20 @@
         <xacro:unless value="${use_fake_hardware or sim_gazebo}">
         </xacro:unless>
       </hardware>
-      <xacro:wheel_ros2_control prefix="${prefix}" side="lf_" swerve_id="0" wheel_id="1"/>
-      <xacro:wheel_ros2_control prefix="${prefix}" side="rf_" swerve_id="2" wheel_id="3"/>
-      <xacro:wheel_ros2_control prefix="${prefix}" side="rr_" swerve_id="4" wheel_id="5"/>
-      <xacro:wheel_ros2_control prefix="${prefix}" side="lr_" swerve_id="6" wheel_id="7"/>
+
+      <xacro:macro name="iterate_include_wheel_module_ros2_control" params="wheel_module_list:=^">
+        <xacro:if value="${wheel_module_list}">
+          <!-- pop first item from list -->
+          <xacro:property name="wheel_module_name" value="${wheel_module_list.pop(0)}"/>
+          <xacro:wheel_ros2_control prefix="${prefix}" 
+            side="${wheel_module_name}_" swerve_id="0" wheel_id="1"/>
+          <!-- recursively call myself -->
+          <xacro:iterate_include_wheel_module_ros2_control/>
+        </xacro:if>
+      </xacro:macro>
+
+      <xacro:iterate_include_wheel_module_ros2_control wheel_module_list="${list(wheel_module_list)}"/>
+
     </ros2_control>
   </xacro:macro>
 </robot>

@@ -57,5 +57,6 @@
     prefix="$(arg prefix)"
     sim_gazebo="$(arg sim_gazebo)"
     use_fake_hardware="$(arg use_fake_hardware)"
+    physical_parameters_file="$(arg physical_parameters_file)"
   />
 </robot>
