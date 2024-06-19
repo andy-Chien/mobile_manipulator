@@ -41,7 +41,7 @@ namespace mm_controllers
 {
 namespace mcu = mm_controllers::utils;
 namespace mcdd = mm_controllers::data_define;
-using CmdType = mm_msgs::msg::ServoControl;
+using CmdType = geometry_msgs::msg::TwistStamped;
 
 /**
  * \brief Forward command controller for a set of position controlled joints (linear or angular).

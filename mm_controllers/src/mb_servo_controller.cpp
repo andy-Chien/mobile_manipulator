@@ -270,7 +270,6 @@ controller_interface::InterfaceConfiguration
 controller_interface::return_type MBServoController::update(
   const rclcpp::Time & time, const rclcpp::Duration & period)
 {
-  bool update_base_cmd = false;
   auto last_cmd_msg = rt_command_ptr_.readFromRT();
   for(auto const& [wheel_name, wheel_interface] : wheel_interfaces_)
   {
@@ -316,19 +315,8 @@ controller_interface::return_type MBServoController::update(
     return controller_interface::return_type::OK;
   }
 
-  switch ((*last_cmd_msg)->control_mode)
-  {
-  case mm_msgs::msg::ServoControl::BASE:
-    update_base_cmd = updateBaseCmd(
-      (*last_cmd_msg)->base_cmd, (*last_cmd_msg)->base_cmd_frame, period);
-    break;
-  default:
-    RCLCPP_ERROR(get_node()->get_logger(), 
-      "Control mode %d not supported!", (*last_cmd_msg)->control_mode);
-    return controller_interface::return_type::ERROR;
-  }
-
-  if(update_base_cmd)
+  if(updateBaseCmd((*last_cmd_msg)->twist, 
+      mm_msgs::msg::ServoControl::BASE_FRAME, period))
   {
     mcu::setBaseCmd(wheel_interfaces_, base_data_);
   }
