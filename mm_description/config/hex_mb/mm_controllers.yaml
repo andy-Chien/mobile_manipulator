@@ -612,15 +612,18 @@
         - lf_wheel
         - rf_wheel
         - mr_wheel
+        - lr_wheel
+        - rr_wheel
+        - mf_wheel
       base_params:
         prefix: "mobile_"
         linear_vel: 0.5
         angular_vel: 1.0
         divergence_vel: 1.2
-        linear_acc: 1.0
-        angular_acc: 2.0
-        linear_jerk: 2.0
-        angular_jerk: 4.0
+        linear_acc: 5.0
+        angular_acc: 10.0
+        linear_jerk: 20.0
+        angular_jerk: 40.0
         swerve_command_interfaces:
           - position
         swerve_state_interfaces:
@@ -635,61 +638,124 @@
             joints:
               - lf_swerve_joint
               - lf_wheel_joint
-            radius: 0.12
+            radius: 0.072
             motors_id: [1, 2]
-            pos_on_vehicle: [0.2, 0.21]
-            swerve_joint_has_pos_limit: true
+            pos_on_vehicle: [0.14722, 0.255]
+            swerve_joint_has_pos_limit: false
             swerve_joint_has_vel_limit: true
             swerve_joint_has_acc_limit: true
-            swerve_joint_pos_max: 265.0
-            swerve_joint_pos_min: -85.0
-            swerve_joint_velocity_max: 360.0
-            swerve_joint_acceleration_max: 720.0
+            # swerve_joint_pos_max: 265.0
+            # swerve_joint_pos_min: -85.0
+            swerve_joint_velocity_max: 720.0
+            swerve_joint_acceleration_max: 2880.0
 
             wheel_joint_has_pos_limit: false
             wheel_joint_has_vel_limit: true
             wheel_joint_has_acc_limit: true
             wheel_joint_velocity_max: 540.0
-            wheel_joint_acceleration_max: 900.0
+            wheel_joint_acceleration_max: 2160.0
 
           rf_wheel:
             joints:
               - rf_swerve_joint
               - rf_wheel_joint
-            radius: 0.12
+            radius: 0.072
             motors_id: [3, 4]
-            pos_on_vehicle: [0.2, -0.21]
-            swerve_joint_has_pos_limit: true
+            pos_on_vehicle: [0.14722, -0.255]
+            swerve_joint_has_pos_limit: false
             swerve_joint_has_vel_limit: true
             swerve_joint_has_acc_limit: true
-            swerve_joint_pos_max: 85.0
-            swerve_joint_pos_min: -265.0
-            swerve_joint_velocity_max: 360.0
-            swerve_joint_acceleration_max: 720.0
+            # swerve_joint_pos_max: 85.0
+            # swerve_joint_pos_min: -265.0
+            swerve_joint_velocity_max: 720.0
+            swerve_joint_acceleration_max: 2880.0
 
             wheel_joint_has_pos_limit: false
             wheel_joint_has_vel_limit: true
             wheel_joint_has_acc_limit: true
             wheel_joint_velocity_max: 540.0
-            wheel_joint_acceleration_max: 900.0
+            wheel_joint_acceleration_max: 2160.0
 
           mr_wheel:
             joints:
               - mr_swerve_joint
               - mr_wheel_joint
-            radius: 0.12
+            radius: 0.072
             motors_id: [5, 6]
-            pos_on_vehicle: [-0.2, -0.21]
-            swerve_joint_has_pos_limit: true
+            pos_on_vehicle: [-0.29445, 0.0]
+            swerve_joint_has_pos_limit: false
             swerve_joint_has_vel_limit: true
             swerve_joint_has_acc_limit: true
-            swerve_joint_pos_max: 85.0
-            swerve_joint_pos_min: -265.0
-            swerve_joint_velocity_max: 360.0
-            swerve_joint_acceleration_max: 720.0
+            # swerve_joint_pos_max: 85.0
+            # swerve_joint_pos_min: -265.0
+            swerve_joint_velocity_max: 720.0
+            swerve_joint_acceleration_max: 2880.0
 
             wheel_joint_has_pos_limit: false
             wheel_joint_has_vel_limit: true
             wheel_joint_has_acc_limit: true
             wheel_joint_velocity_max: 540.0
-            wheel_joint_acceleration_max: 900.0
+            wheel_joint_acceleration_max: 2160.0
+
+          lr_wheel:
+            joints:
+              - lr_swerve_joint
+              - lr_wheel_joint
+            radius: 0.072
+            motors_id: [7, 8]
+            pos_on_vehicle: [-0.14722, 0.255]
+            swerve_joint_has_pos_limit: false
+            swerve_joint_has_vel_limit: true
+            swerve_joint_has_acc_limit: true
+            # swerve_joint_pos_max: 265.0
+            # swerve_joint_pos_min: -85.0
+            swerve_joint_velocity_max: 720.0
+            swerve_joint_acceleration_max: 2880.0
+
+            wheel_joint_has_pos_limit: false
+            wheel_joint_has_vel_limit: true
+            wheel_joint_has_acc_limit: true
+            wheel_joint_velocity_max: 540.0
+            wheel_joint_acceleration_max: 2160.0
+
+          rr_wheel:
+            joints:
+              - rr_swerve_joint
+              - rr_wheel_joint
+            radius: 0.072
+            motors_id: [9, 10]
+            pos_on_vehicle: [-0.14722, -0.255]
+            swerve_joint_has_pos_limit: false
+            swerve_joint_has_vel_limit: true
+            swerve_joint_has_acc_limit: true
+            # swerve_joint_pos_max: 85.0
+            # swerve_joint_pos_min: -265.0
+            swerve_joint_velocity_max: 720.0
+            swerve_joint_acceleration_max: 2880.0
+
+            wheel_joint_has_pos_limit: false
+            wheel_joint_has_vel_limit: true
+            wheel_joint_has_acc_limit: true
+            wheel_joint_velocity_max: 540.0
+            wheel_joint_acceleration_max: 2160.0
+
+          mf_wheel:
+            joints:
+              - mf_swerve_joint
+              - mf_wheel_joint
+            radius: 0.072
+            motors_id: [11, 12]
+            pos_on_vehicle: [0.29445, 0.0]
+            swerve_joint_has_pos_limit: false
+            swerve_joint_has_vel_limit: true
+            swerve_joint_has_acc_limit: true
+            # swerve_joint_pos_max: 85.0
+            # swerve_joint_pos_min: -265.0
+            swerve_joint_velocity_max: 720.0
+            swerve_joint_acceleration_max: 2880.0
+
+            wheel_joint_has_pos_limit: false
+            wheel_joint_has_vel_limit: true
+            wheel_joint_has_acc_limit: true
+            wheel_joint_velocity_max: 540.0
+            wheel_joint_acceleration_max: 2160.0

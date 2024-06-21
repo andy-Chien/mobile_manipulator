@@ -72,7 +72,7 @@ def launch_setup(context, *args, **kwargs):
     use_sim_time = sim_gazebo # use sim time only when using gazebo
 
     controllers_config = PathJoinSubstitution(
-        [FindPackageShare(controller_config_package), "config", "mm_controllers.yaml"]
+        [FindPackageShare(controller_config_package), "config", mobile_type, "mm_controllers.yaml"]
     )
 
     cp = ParameterFile(controllers_config, allow_substs=True)

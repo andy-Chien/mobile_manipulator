@@ -1,0 +1,695 @@
+/**:
+  controller_manager:
+    ros__parameters:
+
+      update_rate: 100 # Hz
+
+      joint_state_broadcaster:
+        type: joint_state_broadcaster/JointStateBroadcaster
+
+      io_and_status_controller:
+        type: ur_controllers/GPIOController
+
+      speed_scaling_state_broadcaster:
+        type: ur_controllers/SpeedScalingStateBroadcaster
+
+      force_torque_sensor_broadcaster:
+        type: ur_controllers/ForceTorqueStateBroadcaster
+
+      joint_trajectory_controller:
+        type: joint_trajectory_controller/JointTrajectoryController
+
+      scaled_joint_trajectory_controller:
+        type: ur_controllers/ScaledJointTrajectoryController
+
+      forward_velocity_controller:
+        type: velocity_controllers/JointGroupVelocityController
+
+      forward_position_controller:
+        type: position_controllers/JointGroupPositionController
+
+      swerve_controller:
+        type: position_controllers/JointGroupPositionController
+
+      wheel_controller:
+        type: velocity_controllers/JointGroupVelocityController
+      
+      mobile_path_controller:
+        type: mm_controllers/MobilePathController
+
+      mm_servo_controller:
+        type: mm_controllers/MMServoController
+      
+      mb_servo_controller:
+        type: mm_controllers/MBServoController
+
+      mm_scaled_joint_trajectory_controller:
+        type: mm_controllers/ScaledJointTrajectoryController
+
+      mm_trajectory_controller:
+        type: mm_controllers/MMTrajectoryController
+
+
+  speed_scaling_state_broadcaster:
+    ros__parameters:
+      state_publish_rate: 100.0
+
+
+  force_torque_sensor_broadcaster:
+    ros__parameters:
+      sensor_name: tcp_fts_sensor
+      state_interface_names:
+        - force.x
+        - force.y
+        - force.z
+        - torque.x
+        - torque.y
+        - torque.z
+      frame_id: tool0
+      topic_name: ft_data
+
+
+  joint_trajectory_controller:
+    ros__parameters:
+      joints:
+        - $(var arm_prefix)shoulder_pan_joint
+        - $(var arm_prefix)shoulder_lift_joint
+        - $(var arm_prefix)elbow_joint
+        - $(var arm_prefix)wrist_1_joint
+        - $(var arm_prefix)wrist_2_joint
+        - $(var arm_prefix)wrist_3_joint
+      command_interfaces:
+        - position
+      state_interfaces:
+        - position
+        - velocity
+      state_publish_rate: 100.0
+      action_monitor_rate: 20.0
+      allow_partial_joints_goal: false
+      constraints:
+        stopped_velocity_tolerance: 0.2
+        goal_time: 0.0
+        $(var arm_prefix)shoulder_pan_joint: {trajectory: 0.2, goal: 0.1}
+        $(var arm_prefix)shoulder_lift_joint: {trajectory: 0.2, goal: 0.1}
+        $(var arm_prefix)elbow_joint: {trajectory: 0.2, goal: 0.1}
+        $(var arm_prefix)wrist_1_joint: {trajectory: 0.2, goal: 0.1}
+        $(var arm_prefix)wrist_2_joint: {trajectory: 0.2, goal: 0.1}
+        $(var arm_prefix)wrist_3_joint: {trajectory: 0.2, goal: 0.1}
+
+
+  scaled_joint_trajectory_controller:
+    ros__parameters:
+      joints:
+        - $(var arm_prefix)shoulder_pan_joint
+        - $(var arm_prefix)shoulder_lift_joint
+        - $(var arm_prefix)elbow_joint
+        - $(var arm_prefix)wrist_1_joint
+        - $(var arm_prefix)wrist_2_joint
+        - $(var arm_prefix)wrist_3_joint
+      command_interfaces:
+        - position
+      state_interfaces:
+        - position
+        - velocity
+      state_publish_rate: 100.0
+      action_monitor_rate: 20.0
+      allow_partial_joints_goal: false
+      constraints:
+        stopped_velocity_tolerance: 0.2
+        goal_time: 0.0
+        $(var arm_prefix)shoulder_pan_joint: {trajectory: 0.2, goal: 0.1}
+        $(var arm_prefix)shoulder_lift_joint: {trajectory: 0.2, goal: 0.1}
+        $(var arm_prefix)elbow_joint: {trajectory: 0.2, goal: 0.1}
+        $(var arm_prefix)wrist_1_joint: {trajectory: 0.2, goal: 0.1}
+        $(var arm_prefix)wrist_2_joint: {trajectory: 0.2, goal: 0.1}
+        $(var arm_prefix)wrist_3_joint: {trajectory: 0.2, goal: 0.1}
+
+  mm_scaled_joint_trajectory_controller:
+    ros__parameters:
+      joints:
+        - $(var arm_prefix)shoulder_pan_joint
+        - $(var arm_prefix)shoulder_lift_joint
+        - $(var arm_prefix)elbow_joint
+        - $(var arm_prefix)wrist_1_joint
+        - $(var arm_prefix)wrist_2_joint
+        - $(var arm_prefix)wrist_3_joint
+      command_interfaces:
+        - position
+      state_interfaces:
+        - position
+        - velocity
+      state_publish_rate: 100.0
+      action_monitor_rate: 20.0
+      allow_partial_joints_goal: false
+      constraints:
+        stopped_velocity_tolerance: 0.2
+        goal_time: 0.0
+        $(var arm_prefix)shoulder_pan_joint: {trajectory: 0.2, goal: 0.1}
+        $(var arm_prefix)shoulder_lift_joint: {trajectory: 0.2, goal: 0.1}
+        $(var arm_prefix)elbow_joint: {trajectory: 0.2, goal: 0.1}
+        $(var arm_prefix)wrist_1_joint: {trajectory: 0.2, goal: 0.1}
+        $(var arm_prefix)wrist_2_joint: {trajectory: 0.2, goal: 0.1}
+        $(var arm_prefix)wrist_3_joint: {trajectory: 0.2, goal: 0.1}
+
+  mm_trajectory_controller:
+    ros__parameters:
+      wheel_names:
+        - lf_wheel
+        - rf_wheel
+        - rr_wheel
+        - lr_wheel
+      base_joints:
+        - linear_x
+        - linear_y
+        - angular_z
+      arm_joints:
+        - $(var arm_prefix)shoulder_pan_joint
+        - $(var arm_prefix)shoulder_lift_joint
+        - $(var arm_prefix)elbow_joint
+        - $(var arm_prefix)wrist_1_joint
+        - $(var arm_prefix)wrist_2_joint
+        - $(var arm_prefix)wrist_3_joint
+      state_publish_rate: 100.0
+      action_monitor_rate: 20.0
+      allow_partial_joints_goal: true
+      constraints:
+        stopped_velocity_tolerance: 0.2
+        goal_time: 0.0
+        linear_x: {trajectory: 0.2, goal: 0.05}
+        linear_y: {trajectory: 0.2, goal: 0.05}
+        angular_z: {trajectory: 0.4, goal: 0.1}
+        $(var arm_prefix)shoulder_pan_joint: {trajectory: 0.2, goal: 0.1}
+        $(var arm_prefix)shoulder_lift_joint: {trajectory: 0.2, goal: 0.1}
+        $(var arm_prefix)elbow_joint: {trajectory: 0.2, goal: 0.1}
+        $(var arm_prefix)wrist_1_joint: {trajectory: 0.2, goal: 0.1}
+        $(var arm_prefix)wrist_2_joint: {trajectory: 0.2, goal: 0.1}
+        $(var arm_prefix)wrist_3_joint: {trajectory: 0.2, goal: 0.1}
+
+      arm_params:
+        command_interfaces:
+          - position
+        state_interfaces:
+          - position
+          - velocity
+        joint_limits:
+          $(var arm_prefix)shoulder_pan_joint: {pos_max: 180.0, pos_min: -180.0, velocity: 360.0, acceleration: 360.0}
+          $(var arm_prefix)shoulder_lift_joint: {pos_max: 180.0, pos_min: -180.0, velocity: 360.0, acceleration: 360.0}
+          $(var arm_prefix)elbow_joint: {pos_max: 180.0, pos_min: -180.0, velocity: 360.0, acceleration: 360.0}
+          $(var arm_prefix)wrist_1_joint: {pos_max: 180.0, pos_min: -180.0, velocity: 360.0, acceleration: 360.0}
+          $(var arm_prefix)wrist_2_joint: {pos_max: 180.0, pos_min: -180.0, velocity: 360.0, acceleration: 360.0}
+          $(var arm_prefix)wrist_3_joint: {pos_max: 180.0, pos_min: -180.0, velocity: 360.0, acceleration: 360.0}
+      base_params:
+        prefix: "mobile_"
+        linear_vel: 0.2
+        angular_vel: 0.4
+        divergence_vel: 1.2
+        linear_acc: 0.4
+        angular_acc: 0.8
+        divergence_acc: 2.4
+        linear_jerk: 0.8
+        angular_jerk: 1.6
+        swerve_command_interfaces:
+          - position
+        swerve_state_interfaces:
+          - position
+          - velocity
+        wheel_command_interfaces:
+          - velocity
+        wheel_state_interfaces:
+          - velocity
+        wheel_params:
+          lf_wheel:
+            joints:
+              - lf_swerve_joint
+              - lf_wheel_joint
+            radius: 0.12
+            motors_id: [1, 2]
+            pos_on_vehicle: [0.2, 0.21]
+            swerve_joint_has_pos_limit: true
+            swerve_joint_has_vel_limit: true
+            swerve_joint_has_acc_limit: true
+            swerve_joint_pos_max: 265.0
+            swerve_joint_pos_min: -85.0
+            swerve_joint_velocity_max: 360.0
+            swerve_joint_acceleration_max: 1080.0
+
+            wheel_joint_has_pos_limit: false
+            wheel_joint_has_vel_limit: true
+            wheel_joint_has_acc_limit: true
+            wheel_joint_velocity_max: 540.0
+            wheel_joint_acceleration_max: 1620.0
+
+          rf_wheel:
+            joints:
+              - rf_swerve_joint
+              - rf_wheel_joint
+            radius: 0.12
+            motors_id: [3, 4]
+            pos_on_vehicle: [0.2, -0.21]
+            swerve_joint_has_pos_limit: true
+            swerve_joint_has_vel_limit: true
+            swerve_joint_has_acc_limit: true
+            swerve_joint_pos_max: 85.0
+            swerve_joint_pos_min: -265.0
+            swerve_joint_velocity_max: 360.0
+            swerve_joint_acceleration_max: 1080.0
+
+            wheel_joint_has_pos_limit: false
+            wheel_joint_has_vel_limit: true
+            wheel_joint_has_acc_limit: true
+            wheel_joint_velocity_max: 540.0
+            wheel_joint_acceleration_max: 1620.0
+
+          rr_wheel:
+            joints:
+              - rr_swerve_joint
+              - rr_wheel_joint
+            radius: 0.12
+            motors_id: [5, 6]
+            pos_on_vehicle: [-0.2, -0.21]
+            swerve_joint_has_pos_limit: true
+            swerve_joint_has_vel_limit: true
+            swerve_joint_has_acc_limit: true
+            swerve_joint_pos_max: 85.0
+            swerve_joint_pos_min: -265.0
+            swerve_joint_velocity_max: 360.0
+            swerve_joint_acceleration_max: 1080.0
+        
+            wheel_joint_has_pos_limit: false
+            wheel_joint_has_vel_limit: true
+            wheel_joint_has_acc_limit: true
+            wheel_joint_velocity_max: 540.0
+            wheel_joint_acceleration_max: 1620.0
+
+          lr_wheel:
+            joints:
+              - lr_swerve_joint
+              - lr_wheel_joint
+            radius: 0.12
+            motors_id: [7, 8]
+            pos_on_vehicle: [-0.2, 0.21]
+            swerve_joint_has_pos_limit: true
+            swerve_joint_has_vel_limit: true
+            swerve_joint_has_acc_limit: true
+            swerve_joint_pos_max: 265.0
+            swerve_joint_pos_min: -85.0
+            swerve_joint_velocity_max: 360.0
+            swerve_joint_acceleration_max: 1080.0
+
+            wheel_joint_has_pos_limit: false
+            wheel_joint_has_vel_limit: true
+            wheel_joint_has_acc_limit: true
+            wheel_joint_velocity_max: 540.0
+            wheel_joint_acceleration_max: 1620.0
+
+  forward_velocity_controller:
+    ros__parameters:
+      joints:
+        - $(var arm_prefix)shoulder_pan_joint
+        - $(var arm_prefix)shoulder_lift_joint
+        - $(var arm_prefix)elbow_joint
+        - $(var arm_prefix)wrist_1_joint
+        - $(var arm_prefix)wrist_2_joint
+        - $(var arm_prefix)wrist_3_joint
+      interface_name: velocity
+
+  forward_position_controller:
+    ros__parameters:
+      joints:
+        - $(var arm_prefix)shoulder_pan_joint
+        - $(var arm_prefix)shoulder_lift_joint
+        - $(var arm_prefix)elbow_joint
+        - $(var arm_prefix)wrist_1_joint
+        - $(var arm_prefix)wrist_2_joint
+        - $(var arm_prefix)wrist_3_joint
+
+  swerve_controller:
+    ros__parameters:
+      joints:
+        - mobile_lf_swerve_joint
+        - mobile_rf_swerve_joint
+        - mobile_rr_swerve_joint
+        - mobile_lr_swerve_joint
+      interface_name: position
+
+  wheel_controller:
+    ros__parameters:
+      joints:
+        - mobile_lf_wheel_joint
+        - mobile_rf_wheel_joint
+        - mobile_rr_wheel_joint
+        - mobile_lr_wheel_joint
+      interface_name: velocity
+      # open_loop_control: false
+
+  mm_servo_controller:
+    ros__parameters:
+      arm_names:
+        - ur10e
+      wheel_names:
+        - lf_wheel
+        - rf_wheel
+        - rr_wheel
+        - lr_wheel
+      arm_joints:
+        - $(var arm_prefix)shoulder_pan_joint
+        - $(var arm_prefix)shoulder_lift_joint
+        - $(var arm_prefix)elbow_joint
+        - $(var arm_prefix)wrist_1_joint
+        - $(var arm_prefix)wrist_2_joint
+        - $(var arm_prefix)wrist_3_joint
+
+      base_params:
+        prefix: "mobile_"
+        linear_vel: 0.5
+        angular_vel: 1.0
+        divergence_vel: 1.2
+        linear_acc: 1.0
+        angular_acc: 2.0
+        linear_jerk: 2.0
+        angular_jerk: 4.0
+        swerve_command_interfaces:
+          - position
+        swerve_state_interfaces:
+          - position
+          - velocity
+        wheel_command_interfaces:
+          - velocity
+        wheel_state_interfaces:
+          - velocity
+        wheel_params:
+          lf_wheel:
+            joints:
+              - lf_swerve_joint
+              - lf_wheel_joint
+            radius: 0.12
+            motors_id: [1, 2]
+            pos_on_vehicle: [0.2, 0.21]
+            swerve_joint_has_pos_limit: true
+            swerve_joint_has_vel_limit: true
+            swerve_joint_has_acc_limit: true
+            swerve_joint_pos_max: 265.0
+            swerve_joint_pos_min: -85.0
+            swerve_joint_velocity_max: 360.0
+            swerve_joint_acceleration_max: 720.0
+
+            wheel_joint_has_pos_limit: false
+            wheel_joint_has_vel_limit: true
+            wheel_joint_has_acc_limit: true
+            wheel_joint_velocity_max: 540.0
+            wheel_joint_acceleration_max: 900.0
+
+          rf_wheel:
+            joints:
+              - rf_swerve_joint
+              - rf_wheel_joint
+            radius: 0.12
+            motors_id: [3, 4]
+            pos_on_vehicle: [0.2, -0.21]
+            swerve_joint_has_pos_limit: true
+            swerve_joint_has_vel_limit: true
+            swerve_joint_has_acc_limit: true
+            swerve_joint_pos_max: 85.0
+            swerve_joint_pos_min: -265.0
+            swerve_joint_velocity_max: 360.0
+            swerve_joint_acceleration_max: 720.0
+
+            wheel_joint_has_pos_limit: false
+            wheel_joint_has_vel_limit: true
+            wheel_joint_has_acc_limit: true
+            wheel_joint_velocity_max: 540.0
+            wheel_joint_acceleration_max: 900.0
+
+          rr_wheel:
+            joints:
+              - rr_swerve_joint
+              - rr_wheel_joint
+            radius: 0.12
+            motors_id: [5, 6]
+            pos_on_vehicle: [-0.2, -0.21]
+            swerve_joint_has_pos_limit: true
+            swerve_joint_has_vel_limit: true
+            swerve_joint_has_acc_limit: true
+            swerve_joint_pos_max: 85.0
+            swerve_joint_pos_min: -265.0
+            swerve_joint_velocity_max: 360.0
+            swerve_joint_acceleration_max: 720.0
+
+            wheel_joint_has_pos_limit: false
+            wheel_joint_has_vel_limit: true
+            wheel_joint_has_acc_limit: true
+            wheel_joint_velocity_max: 540.0
+            wheel_joint_acceleration_max: 900.0
+
+          lr_wheel:
+            joints:
+              - lr_swerve_joint
+              - lr_wheel_joint
+            radius: 0.12
+            motors_id: [7, 8]
+            pos_on_vehicle: [-0.2, 0.21]
+            swerve_joint_has_pos_limit: true
+            swerve_joint_has_vel_limit: true
+            swerve_joint_has_acc_limit: true
+            swerve_joint_pos_max: 265.0
+            swerve_joint_pos_min: -85.0
+            swerve_joint_velocity_max: 360.0
+            swerve_joint_acceleration_max: 720.0
+        
+            wheel_joint_has_pos_limit: false
+            wheel_joint_has_vel_limit: true
+            wheel_joint_has_acc_limit: true
+            wheel_joint_velocity_max: 540.0
+            wheel_joint_acceleration_max: 900.0
+
+
+      arm_params:
+        command_interfaces:
+          - position
+        state_interfaces:
+          - position
+          - velocity
+        joint_limits:
+          $(var arm_prefix)shoulder_pan_joint: {
+            has_pos_limit: true, has_vel_limit: true, has_acc_limit: true,
+            pos_max: 360.0, pos_min: -360.0, velocity: 120.0, acceleration: 240.0
+          }
+          $(var arm_prefix)shoulder_lift_joint: {
+            has_pos_limit: true, has_vel_limit: true, has_acc_limit: true,
+            pos_max: 360.0, pos_min: -360.0, velocity: 120.0, acceleration: 240.0
+          }
+          $(var arm_prefix)elbow_joint: {
+            has_pos_limit: true, has_vel_limit: true, has_acc_limit: true,
+            pos_max: 180.0, pos_min: -180.0, velocity: 180.0, acceleration: 360.0
+          }
+          $(var arm_prefix)wrist_1_joint: {
+            has_pos_limit: true, has_vel_limit: true, has_acc_limit: true,
+            pos_max: 360.0, pos_min: -360.0, velocity: 180.0, acceleration: 360.0
+          }
+          $(var arm_prefix)wrist_2_joint: {
+            has_pos_limit: true, has_vel_limit: true, has_acc_limit: true,
+            pos_max: 360.0, pos_min: -360.0, velocity: 180.0, acceleration: 360.0
+          }
+          $(var arm_prefix)wrist_3_joint: {
+            has_pos_limit: true, has_vel_limit: true, has_acc_limit: true,
+            pos_max: 360.0, pos_min: -360.0, velocity: 180.0, acceleration: 360.0
+          }
+
+  mobile_path_controller:
+    ros__parameters:
+      wheel_names:
+        - lf_wheel
+        - rf_wheel
+        - rr_wheel
+        - lr_wheel
+      
+      base_params:
+        prefix: "mobile_"
+        linear_vel: 0.3
+        angular_vel: 0.6
+        divergence_vel: 1.2
+        linear_acc: 0.6
+        angular_acc: 1.2
+        linear_jerk: 1.2
+        angular_jerk: 2.4
+        swerve_command_interfaces:
+          - position
+        swerve_state_interfaces:
+          - position
+          - velocity
+        wheel_command_interfaces:
+          - velocity
+        wheel_state_interfaces:
+          - velocity
+        wheel_params:
+          lf_wheel:
+            joints:
+              - lf_swerve_joint
+              - lf_wheel_joint
+            radius: 0.12
+            motors_id: [1, 2]
+            pos_on_vehicle: [0.2, 0.21]
+            swerve_joint_has_pos_limit: true
+            swerve_joint_has_vel_limit: true
+            swerve_joint_has_acc_limit: true
+            swerve_joint_pos_max: 265.0
+            swerve_joint_pos_min: -85.0
+            swerve_joint_velocity_max: 360.0
+            swerve_joint_acceleration_max: 720.0
+
+            wheel_joint_has_pos_limit: false
+            wheel_joint_has_vel_limit: true
+            wheel_joint_has_acc_limit: true
+            wheel_joint_velocity_max: 540.0
+            wheel_joint_acceleration_max: 900.0
+
+          rf_wheel:
+            joints:
+              - rf_swerve_joint
+              - rf_wheel_joint
+            radius: 0.12
+            motors_id: [3, 4]
+            pos_on_vehicle: [0.2, -0.21]
+            swerve_joint_has_pos_limit: true
+            swerve_joint_has_vel_limit: true
+            swerve_joint_has_acc_limit: true
+            swerve_joint_pos_max: 85.0
+            swerve_joint_pos_min: -265.0
+            swerve_joint_velocity_max: 360.0
+            swerve_joint_acceleration_max: 720.0
+
+            wheel_joint_has_pos_limit: false
+            wheel_joint_has_vel_limit: true
+            wheel_joint_has_acc_limit: true
+            wheel_joint_velocity_max: 540.0
+            wheel_joint_acceleration_max: 900.0
+
+          rr_wheel:
+            joints:
+              - rr_swerve_joint
+              - rr_wheel_joint
+            radius: 0.12
+            motors_id: [5, 6]
+            pos_on_vehicle: [-0.2, -0.21]
+            swerve_joint_has_pos_limit: true
+            swerve_joint_has_vel_limit: true
+            swerve_joint_has_acc_limit: true
+            swerve_joint_pos_max: 85.0
+            swerve_joint_pos_min: -265.0
+            swerve_joint_velocity_max: 360.0
+            swerve_joint_acceleration_max: 720.0
+
+            wheel_joint_has_pos_limit: false
+            wheel_joint_has_vel_limit: true
+            wheel_joint_has_acc_limit: true
+            wheel_joint_velocity_max: 540.0
+            wheel_joint_acceleration_max: 900.0
+
+          lr_wheel:
+            joints:
+              - lr_swerve_joint
+              - lr_wheel_joint
+            radius: 0.12
+            motors_id: [7, 8]
+            pos_on_vehicle: [-0.2, 0.21]
+            swerve_joint_has_pos_limit: true
+            swerve_joint_has_vel_limit: true
+            swerve_joint_has_acc_limit: true
+            swerve_joint_pos_max: 265.0
+            swerve_joint_pos_min: -85.0
+            swerve_joint_velocity_max: 360.0
+            swerve_joint_acceleration_max: 720.0
+        
+            wheel_joint_has_pos_limit: false
+            wheel_joint_has_vel_limit: true
+            wheel_joint_has_acc_limit: true
+            wheel_joint_velocity_max: 540.0
+            wheel_joint_acceleration_max: 900.0
+
+  mb_servo_controller:
+    ros__parameters:
+      wheel_names:
+        - lf_wheel
+        - rf_wheel
+        - mr_wheel
+      base_params:
+        prefix: "mobile_"
+        linear_vel: 0.5
+        angular_vel: 1.0
+        divergence_vel: 1.2
+        linear_acc: 5.0
+        angular_acc: 10.0
+        linear_jerk: 20.0
+        angular_jerk: 40.0
+        swerve_command_interfaces:
+          - position
+        swerve_state_interfaces:
+          - position
+          - velocity
+        wheel_command_interfaces:
+          - velocity
+        wheel_state_interfaces:
+          - velocity
+        wheel_params:
+          lf_wheel:
+            joints:
+              - lf_swerve_joint
+              - lf_wheel_joint
+            radius: 0.072
+            motors_id: [1, 2]
+            pos_on_vehicle: [0.14722, 0.255]
+            swerve_joint_has_pos_limit: false
+            swerve_joint_has_vel_limit: true
+            swerve_joint_has_acc_limit: true
+            # swerve_joint_pos_max: 265.0
+            # swerve_joint_pos_min: -85.0
+            swerve_joint_velocity_max: 720.0
+            swerve_joint_acceleration_max: 2880.0
+
+            wheel_joint_has_pos_limit: false
+            wheel_joint_has_vel_limit: true
+            wheel_joint_has_acc_limit: true
+            wheel_joint_velocity_max: 540.0
+            wheel_joint_acceleration_max: 2160.0
+
+          rf_wheel:
+            joints:
+              - rf_swerve_joint
+              - rf_wheel_joint
+            radius: 0.072
+            motors_id: [3, 4]
+            pos_on_vehicle: [0.14722, -0.255]
+            swerve_joint_has_pos_limit: false
+            swerve_joint_has_vel_limit: true
+            swerve_joint_has_acc_limit: true
+            # swerve_joint_pos_max: 85.0
+            # swerve_joint_pos_min: -265.0
+            swerve_joint_velocity_max: 720.0
+            swerve_joint_acceleration_max: 2880.0
+
+            wheel_joint_has_pos_limit: false
+            wheel_joint_has_vel_limit: true
+            wheel_joint_has_acc_limit: true
+            wheel_joint_velocity_max: 540.0
+            wheel_joint_acceleration_max: 2160.0
+
+          mr_wheel:
+            joints:
+              - mr_swerve_joint
+              - mr_wheel_joint
+            radius: 0.072
+            motors_id: [5, 6]
+            pos_on_vehicle: [-0.29445, 0.0]
+            swerve_joint_has_pos_limit: false
+            swerve_joint_has_vel_limit: true
+            swerve_joint_has_acc_limit: true
+            # swerve_joint_pos_max: 85.0
+            # swerve_joint_pos_min: -265.0
+            swerve_joint_velocity_max: 720.0
+            swerve_joint_acceleration_max: 2880.0
+
+            wheel_joint_has_pos_limit: false
+            wheel_joint_has_vel_limit: true
+            wheel_joint_has_acc_limit: true
+            wheel_joint_velocity_max: 540.0
+            wheel_joint_acceleration_max: 2160.0
