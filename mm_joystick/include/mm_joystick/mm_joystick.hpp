@@ -1,5 +1,6 @@
 #include <rclcpp/rclcpp.hpp>
 #include <sensor_msgs/msg/joy.hpp>
+#include <geometry_msgs/msg/twist_stamped.hpp>
 #include "mm_msgs/msg/servo_control.hpp"
 
 class MMJoystick : public rclcpp::Node
@@ -57,4 +58,5 @@ private:
 	uint8_t base_cmd_frame = mm_msgs::msg::ServoControl::BASE_FRAME;
 	rclcpp::Subscription<sensor_msgs::msg::Joy>::SharedPtr joy_sub;
 	rclcpp::Publisher<mm_msgs::msg::ServoControl>::SharedPtr cmd_pub;
+	rclcpp::Publisher<geometry_msgs::msg::TwistStamped>::SharedPtr twist_cmd_pub;
 };

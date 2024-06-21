@@ -1,0 +1,66 @@
+wheel_module_list:
+  - lf
+  - rf
+  - mr
+  - lr
+  - rr
+  - mf
+
+joints:
+  base:
+    origin: {x: 0, y: 0, z: 0.44, roll: 0, pitch: 0, yaw: 0}
+  swerve:
+    lf:
+      origin: {x: 0.14722, y: 0.255, z: 0.0695, roll: 0, pitch: 0, yaw: 0}
+      axis: {x: 0, y: 0, z: 1}
+    rf:
+      origin: {x: 0.14722, y: -0.255, z: 0.0695, roll: 0, pitch: 0, yaw: 0}
+      axis: {x: 0, y: 0, z: 1}
+    mr:
+      origin: {x: -0.29445, y: 0, z: 0.0695, roll: 0, pitch: 0, yaw: 0}
+      axis: {x: 0, y: 0, z: 1}
+    lr:
+      origin: {x: -0.14722, y: 0.255, z: 0.0695, roll: 0, pitch: 0, yaw: 0}
+      axis: {x: 0, y: 0, z: 1}
+    rr:
+      origin: {x: -0.14722, y: -0.255, z: 0.0695, roll: 0, pitch: 0, yaw: 0}
+      axis: {x: 0, y: 0, z: 1}
+    mf:
+      origin: {x: 0.29445, y: 0, z: 0.0695, roll: 0, pitch: 0, yaw: 0}
+      axis: {x: 0, y: 0, z: 1}
+  wheel:
+    lf:
+      origin: {x: 0, y: 0, z: -0.1245, roll: 1.5708, pitch: 0, yaw: 0}
+      axis: {x: 0, y: 0, z: -1}
+    rf:
+      origin: {x: 0, y: 0, z: -0.1245, roll: 1.5708, pitch: 0, yaw: 0}
+      axis: {x: 0, y: 0, z: -1}
+    mr:
+      origin: {x: 0, y: 0, z: -0.1245, roll: 1.5708, pitch: 0, yaw: 0}
+      axis: {x: 0, y: 0, z: -1}
+    lr:
+      origin: {x: 0, y: 0, z: -0.1245, roll: 1.5708, pitch: 0, yaw: 0}
+      axis: {x: 0, y: 0, z: -1}
+    rr:
+      origin: {x: 0, y: 0, z: -0.1245, roll: 1.5708, pitch: 0, yaw: 0}
+      axis: {x: 0, y: 0, z: -1}
+    mf:
+      origin: {x: 0, y: 0, z: -0.1245, roll: 1.5708, pitch: 0, yaw: 0}
+      axis: {x: 0, y: 0, z: -1}
+
+links:
+  base:
+    inertial:
+      origin: {x: 0, y: 0, z: 0.2, roll: 0, pitch: 0, yaw: 0}
+      mass: 40
+      inertia: {xx: 2.8, yy: 2.8, zz: 3.5}
+  swerve:
+    inertial:
+      origin: {x: 0, y: 0, z: -0.05, roll: 0, pitch: 0, yaw: 0}
+      mass: 0.5
+      inertia: {xx: 0.001, yy: 0.001, zz: 0.001}
+  wheel:
+    inertial:
+      origin: {x: 0, y: 0, z: 0.003, roll: 0, pitch: 0, yaw: 0}
+      mass: 0.6
+      inertia: {xx: 0.01, yy: 0.01, zz: 0.015}

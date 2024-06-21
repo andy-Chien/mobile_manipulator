@@ -88,7 +88,7 @@ def generate_launch_description():
     declared_arguments.append(
         DeclareLaunchArgument(
             "joy_config_file",
-            default_value="xbox_joy.yaml",
+            default_value="F710_joy.yaml",
             description="YAML file with the joystick configuration.",
         )
     )

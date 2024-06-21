@@ -10,6 +10,7 @@ MMJoystick::MMJoystick(std::string node_name)
 	joy_sub = this->create_subscription<sensor_msgs::msg::Joy>("joy", 1, std::bind(
 				&MMJoystick::joysticMsgCallback, this, std::placeholders::_1));
 	cmd_pub = this->create_publisher<mm_msgs::msg::ServoControl>("/mm_servo_controller/cmd_vel", 1);
+	twist_cmd_pub = this->create_publisher<geometry_msgs::msg::TwistStamped>("/mb_servo_controller/cmd_vel", 1);
 }
 
 void MMJoystick::initParameters()
@@ -256,7 +257,11 @@ void MMJoystick::joysticMsgCallback(const sensor_msgs::msg::Joy::SharedPtr msg)
 		cmd.header.frame_id = node_name_;
 		cmd.arm_cmd_frame = arm_cmd_frame;
 		cmd.base_cmd_frame = base_cmd_frame;
+		geometry_msgs::msg::TwistStamped twist_cmd;
+		twist_cmd.header = cmd.header;
+		twist_cmd.twist = cmd.base_cmd;
 		cmd_pub->publish(cmd);
+		twist_cmd_pub->publish(twist_cmd);
 	}
 	else{
 		checkCmdFrameSwitch(msg);

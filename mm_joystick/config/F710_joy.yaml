@@ -1,0 +1,26 @@
+mm_joystick:
+  ros__parameters:
+    dead_zone: 0.1
+    x_axes: 1
+    y_axes: 0
+    z_axes: 4
+    rx_axes: 6
+    ry_axes: 7
+    rz_axes: 3
+    base_en_axes: 2
+    arm_en_axes: 5
+    hybrid_en_button: 5
+    arm_frame_switch_button: 6
+    base_frame_switch_button: 7
+    en_threshold: -0.9
+    base_trans_limit: 0.6
+    base_rotat_limit: 2.0
+    arm_trans_limit: 0.3
+    arm_rotat_limit: 0.5
+    single_joint:
+      joints: 
+        - shoulder_lift_joint
+        - elbow_joint
+        - wrist_1_joint
+        - wrist_2_joint
+      buttons: [0, 1, 2, 3]
